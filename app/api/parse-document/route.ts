@@ -3,7 +3,7 @@ import OpenAI from 'openai';
 import mammoth from 'mammoth';
 
 // Dynamic import for pdf-parse to avoid TypeScript errors
-// eslint-disable-next-line @typescript-eslint/no-var-requires
+// eslint-disable-next-line @typescript-eslint/no-require-imports
 const pdf = require('pdf-parse');
 
 const openai = new OpenAI({
