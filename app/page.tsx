@@ -59,14 +59,31 @@ export default function Home() {
   return (
     <div className="min-h-screen" style={{background: 'var(--bg)'}}>
       {/* Header with Disclaimer */}
-      <header style={{background: 'var(--card)', borderBottom: '1px solid #2a2f3a'}}>
-        <div className="max-w-7xl mx-auto px-4 py-4">
-          <h1 className="text-3xl font-bold" style={{color: 'var(--ink)'}}>
-            🔬 LabLens
-          </h1>
-          <p className="text-sm mt-1" style={{color: 'var(--muted)'}}>
-            Lab result insights (informational, not medical advice)
-          </p>
+      <header style={{background: 'var(--card)', borderBottom: '1px solid #2a2f3a', boxShadow: '0 1px 3px rgba(0, 0, 0, 0.3)'}}>
+        <div className="max-w-7xl mx-auto px-6 py-5">
+          <div className="flex items-center space-x-3">
+            <div style={{
+              width: '42px',
+              height: '42px',
+              background: 'linear-gradient(135deg, var(--acc) 0%, #7bc5e8 100%)',
+              borderRadius: '10px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              fontSize: '22px',
+              boxShadow: '0 4px 12px rgba(143, 214, 255, 0.3)'
+            }}>
+              🔬
+            </div>
+            <div>
+              <h1 className="text-2xl font-bold" style={{color: 'var(--ink)', letterSpacing: '-0.02em'}}>
+                LabLens
+              </h1>
+              <p className="text-xs" style={{color: 'var(--muted)'}}>
+                Lab result insights (informational, not medical advice)
+              </p>
+            </div>
+          </div>
         </div>
       </header>
 
@@ -85,8 +102,8 @@ export default function Home() {
       </div>
 
       {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-4 py-8">
-        <div className="card">
+      <main className="max-w-7xl mx-auto px-6 py-10">
+        <div className="card" style={{padding: '32px'}}>
           {/* Tabs */}
           <div style={{borderBottom: '1px solid #2a2f3a', marginBottom: '24px'}}>
             <div className="flex space-x-3">

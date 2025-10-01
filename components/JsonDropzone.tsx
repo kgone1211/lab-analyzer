@@ -92,10 +92,11 @@ export default function JsonDropzone({ onAnalyze, isAnalyzing }: JsonDropzonePro
         onDragLeave={handleDrag}
         onDragOver={handleDrag}
         onDrop={handleDrop}
-        className="border-2 border-dashed rounded-lg p-6 text-center transition-colors"
+        className="border-2 border-dashed rounded-lg p-8 text-center transition-all"
         style={{
           borderColor: dragActive ? 'var(--acc)' : '#2a2f3a',
-          background: dragActive ? 'rgba(143, 214, 255, 0.1)' : '#1f2633'
+          background: dragActive ? 'rgba(143, 214, 255, 0.1)' : '#1f2633',
+          boxShadow: dragActive ? '0 4px 12px rgba(143, 214, 255, 0.2)' : '0 1px 4px rgba(0, 0, 0, 0.2)'
         }}
       >
         <svg
@@ -129,21 +130,31 @@ export default function JsonDropzone({ onAnalyze, isAnalyzing }: JsonDropzonePro
         <p className="mt-2" style={{color: 'var(--muted)', fontSize: '12px'}}>JSON files only</p>
       </div>
 
-      {/* Manual JSON Input */}
-      <div>
-        <div className="flex justify-between items-center mb-2">
-          <label className="form-label">
-            Or paste JSON directly
-          </label>
-          <button
-            type="button"
-            onClick={handleLoadSample}
-            className="text-sm font-medium"
-            style={{color: 'var(--acc)'}}
-          >
-            Load Sample JSON
-          </button>
-        </div>
+        {/* Manual JSON Input */}
+        <div>
+          <div className="flex justify-between items-center mb-3">
+            <label className="form-label" style={{fontSize: '14px', fontWeight: 600}}>
+              Or paste JSON directly
+            </label>
+            <button
+              type="button"
+              onClick={handleLoadSample}
+              className="text-sm font-semibold px-4 py-2 rounded-lg transition-all"
+              style={{
+                color: 'var(--acc)',
+                background: 'rgba(143, 214, 255, 0.1)',
+                border: '1px solid rgba(143, 214, 255, 0.3)'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = 'rgba(143, 214, 255, 0.2)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = 'rgba(143, 214, 255, 0.1)';
+              }}
+            >
+              Load Sample JSON
+            </button>
+          </div>
         <textarea
           value={jsonInput}
           onChange={(e) => setJsonInput(e.target.value)}

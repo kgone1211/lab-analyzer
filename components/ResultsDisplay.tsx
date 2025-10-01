@@ -67,22 +67,39 @@ export default function ResultsDisplay({ result, onReset }: ResultsDisplayProps)
   return (
     <div className="min-h-screen" style={{background: 'var(--bg)'}}>
       {/* Header */}
-      <header style={{background: 'var(--card)', borderBottom: '1px solid #2a2f3a'}}>
-        <div className="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
-          <div>
-            <h1 className="text-3xl font-bold" style={{color: 'var(--ink)'}}>🔬 LabLens Analysis Results</h1>
-            <p className="text-sm mt-1" style={{color: 'var(--muted)'}}>Review your lab analysis below</p>
+      <header style={{background: 'var(--card)', borderBottom: '1px solid #2a2f3a', boxShadow: '0 1px 3px rgba(0, 0, 0, 0.3)'}}>
+        <div className="max-w-7xl mx-auto px-6 py-5 flex justify-between items-center">
+          <div className="flex items-center space-x-3">
+            <div style={{
+              width: '42px',
+              height: '42px',
+              background: 'linear-gradient(135deg, var(--acc) 0%, #7bc5e8 100%)',
+              borderRadius: '10px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              fontSize: '22px',
+              boxShadow: '0 4px 12px rgba(143, 214, 255, 0.3)'
+            }}>
+              🔬
+            </div>
+            <div>
+              <h1 className="text-2xl font-bold" style={{color: 'var(--ink)', letterSpacing: '-0.02em'}}>LabLens Analysis Results</h1>
+              <p className="text-xs" style={{color: 'var(--muted)'}}>Review your lab analysis below</p>
+            </div>
           </div>
           <div className="flex space-x-3">
             <button
               onClick={handlePrint}
-              className="btn px-4 py-2 rounded-lg transition-colors"
+              className="btn px-5 py-2.5 rounded-lg transition-all font-semibold"
+              style={{fontSize: '14px'}}
             >
               Print / Save PDF
             </button>
             <button
               onClick={onReset}
-              className="btn-primary px-4 py-2 rounded-lg transition-colors"
+              className="btn-primary px-5 py-2.5 rounded-lg transition-all font-semibold"
+              style={{fontSize: '14px'}}
             >
               New Analysis
             </button>
@@ -105,7 +122,7 @@ export default function ResultsDisplay({ result, onReset }: ResultsDisplayProps)
       </div>
 
       {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-4 py-8">
+      <main className="max-w-7xl mx-auto px-6 py-10">
         <div ref={printRef} className="space-y-6">
           {/* Overall Severity */}
           <div className="card p-6" style={{
@@ -124,13 +141,17 @@ export default function ResultsDisplay({ result, onReset }: ResultsDisplayProps)
           </div>
 
           {/* Summary Section */}
-          <div className="card p-6">
-            <h2 className="text-2xl font-bold mb-4" style={{color: 'var(--ink)'}}>Summary</h2>
-            <ul className="space-y-2">
+          <div className="card p-8">
+            <h2 className="text-2xl font-bold mb-5" style={{color: 'var(--ink)', letterSpacing: '-0.02em'}}>Summary</h2>
+            <ul className="space-y-3">
               {result.summaryBullets.map((bullet, index) => (
                 <li key={index} className="flex items-start">
-                  <span className="mr-2" style={{color: 'var(--acc)'}}>•</span>
-                  <span style={{color: 'var(--ink)'}}>{bullet}</span>
+                  <span className="mr-3 mt-1" style={{
+                    color: 'var(--acc)',
+                    fontSize: '18px',
+                    fontWeight: 'bold'
+                  }}>•</span>
+                  <span style={{color: 'var(--ink)', fontSize: '15px', lineHeight: '1.6'}}>{bullet}</span>
                 </li>
               ))}
             </ul>
@@ -170,11 +191,11 @@ export default function ResultsDisplay({ result, onReset }: ResultsDisplayProps)
 
           {/* Panel Findings */}
           <div className="space-y-6">
-            <h2 className="text-2xl font-bold" style={{color: 'var(--ink)'}}>Detailed Findings</h2>
+            <h2 className="text-2xl font-bold" style={{color: 'var(--ink)', letterSpacing: '-0.02em'}}>Detailed Findings</h2>
             
             {result.panelFindings.map((panel, panelIndex) => (
-              <div key={panelIndex} className="card p-6">
-                <h3 className="text-xl font-bold mb-2" style={{color: 'var(--ink)'}}>{panel.panelName}</h3>
+              <div key={panelIndex} className="card p-8">
+                <h3 className="text-xl font-bold mb-3" style={{color: 'var(--ink)', letterSpacing: '-0.01em'}}>{panel.panelName}</h3>
                 {panel.summary && (
                   <p className="mb-4 italic" style={{color: 'var(--muted)'}}>{panel.summary}</p>
                 )}

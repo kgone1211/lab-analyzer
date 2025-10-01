@@ -102,12 +102,22 @@ export default function PanelForm({ onAnalyze, isAnalyzing }: PanelFormProps) {
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
       {/* Load Sample Button */}
-      <div className="flex justify-end">
+      <div className="flex justify-end mb-2">
         <button
           type="button"
           onClick={handleLoadSample}
-          className="text-sm font-medium"
-          style={{color: 'var(--acc)'}}
+          className="text-sm font-semibold px-4 py-2 rounded-lg transition-all"
+          style={{
+            color: 'var(--acc)',
+            background: 'rgba(143, 214, 255, 0.1)',
+            border: '1px solid rgba(143, 214, 255, 0.3)'
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.background = 'rgba(143, 214, 255, 0.2)';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.background = 'rgba(143, 214, 255, 0.1)';
+          }}
         >
           Load Sample Data
         </button>
@@ -161,8 +171,12 @@ export default function PanelForm({ onAnalyze, isAnalyzing }: PanelFormProps) {
           <h3 className="font-semibold" style={{color: 'var(--ink)', fontSize: '16px'}}>Enter Values</h3>
           
           {selectedPanels.map(panel => (
-            <div key={panel} style={{background: '#1f2633', border: '1px solid #2a2f3a'}} className="rounded-lg p-4">
-              <h4 className="font-semibold mb-3" style={{color: 'var(--ink)', fontSize: '15px'}}>{panel}</h4>
+            <div key={panel} style={{
+              background: '#1f2633', 
+              border: '1px solid #2a2f3a',
+              boxShadow: '0 1px 4px rgba(0, 0, 0, 0.2)'
+            }} className="rounded-lg p-5">
+              <h4 className="font-semibold mb-4" style={{color: 'var(--ink)', fontSize: '15px', letterSpacing: '-0.01em'}}>{panel}</h4>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {PANEL_MARKERS[panel].map(marker => (
                   <div key={marker} className="form-group">
