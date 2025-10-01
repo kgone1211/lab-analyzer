@@ -81,6 +81,13 @@ The JSON must follow this exact schema:
   ]
 }
 
+CRITICAL: The "value" field must ALWAYS be a number. If you see "<0.1" or ">100" or similar, convert it:
+- "<0.1" → use 0.1 (or 0 if referring to detection limit)
+- ">100" → use 100
+- "Negative" → use 0
+- "Positive" → use 1
+Never use strings for values.
+
 Panel types:
 - CBC: Hemoglobin, Hematocrit, WBC, Platelets, RBC, MCV, MCH, MCHC
 - CMP: Sodium, Potassium, Chloride, CO2, BUN, Creatinine, Glucose, Calcium, AST, ALT, Alk Phos, Albumin, Total Bilirubin
