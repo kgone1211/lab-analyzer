@@ -120,7 +120,7 @@ export default function ResultsDisplay({ result, onReset }: ResultsDisplayProps)
             <h1 className="text-3xl font-bold" style={{color: 'var(--ink)', letterSpacing: '-0.02em', marginBottom: '4px'}}>LabLens</h1>
             <p className="text-sm" style={{color: 'var(--muted)'}}>Analysis Results</p>
           </div>
-          <div className="flex space-x-3" style={{position: 'absolute', right: '24px', top: '50%', transform: 'translateY(-50%)'}}>
+          <div className="flex gap-3" style={{position: 'absolute', right: '24px', top: '50%', transform: 'translateY(-50%)'}}>
             <button
               onClick={handleDownloadPDF}
               className="btn px-5 py-2.5 rounded-lg transition-all font-semibold"

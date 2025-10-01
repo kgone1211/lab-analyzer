@@ -102,21 +102,26 @@ export default function PanelForm({ onAnalyze, isAnalyzing }: PanelFormProps) {
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
       {/* Load Sample Button */}
-      <div className="flex justify-end mb-2">
+      <div className="flex justify-end mb-3">
         <button
           type="button"
           onClick={handleLoadSample}
-          className="text-sm font-semibold px-4 py-2 rounded-lg transition-all"
+          className="text-sm font-semibold px-5 py-2.5 rounded-lg transition-all"
           style={{
             color: 'var(--acc)',
-            background: 'rgba(143, 214, 255, 0.1)',
-            border: '1px solid rgba(143, 214, 255, 0.3)'
+            background: 'rgba(143, 214, 255, 0.15)',
+            border: '1px solid rgba(143, 214, 255, 0.4)',
+            boxShadow: '0 1px 3px rgba(0, 0, 0, 0.2)'
           }}
           onMouseEnter={(e) => {
-            e.currentTarget.style.background = 'rgba(143, 214, 255, 0.2)';
+            e.currentTarget.style.background = 'rgba(143, 214, 255, 0.25)';
+            e.currentTarget.style.transform = 'translateY(-1px)';
+            e.currentTarget.style.boxShadow = '0 2px 6px rgba(0, 0, 0, 0.3)';
           }}
           onMouseLeave={(e) => {
-            e.currentTarget.style.background = 'rgba(143, 214, 255, 0.1)';
+            e.currentTarget.style.background = 'rgba(143, 214, 255, 0.15)';
+            e.currentTarget.style.transform = 'translateY(0)';
+            e.currentTarget.style.boxShadow = '0 1px 3px rgba(0, 0, 0, 0.2)';
           }}
         >
           Load Sample Data
