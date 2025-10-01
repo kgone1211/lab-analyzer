@@ -13,7 +13,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json(
         { 
           error: 'Validation failed', 
-          details: parseResult.error.errors 
+          details: parseResult.error.issues 
         },
         { status: 400 }
       );

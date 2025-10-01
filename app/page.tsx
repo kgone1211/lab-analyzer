@@ -1,7 +1,6 @@
 'use client';
 
 import { useState } from 'react';
-import { Panel } from '@/lib/schemas';
 import PanelForm from '@/components/PanelForm';
 import JsonDropzone from '@/components/JsonDropzone';
 import ResultsDisplay from '@/components/ResultsDisplay';

@@ -1,7 +1,6 @@
 'use client';
 
 import { useState } from 'react';
-import sampleData from '@/fixtures/sample.json';
 
 interface JsonDropzoneProps {
   onAnalyze: (data: unknown) => void;
