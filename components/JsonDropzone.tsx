@@ -109,6 +109,24 @@ export default function JsonDropzone({ onAnalyze, isAnalyzing }: JsonDropzonePro
     setError(null);
   };
 
+  const handleFixJson = () => {
+    try {
+      let fixedJson = jsonInput;
+      
+      // Fix string values that should be numbers (e.g., "<0.1", ">100")
+      fixedJson = fixedJson.replace(/"value":\s*"<([0-9.]+)"/g, '"value": $1');
+      fixedJson = fixedJson.replace(/"value":\s*">([0-9.]+)"/g, '"value": $1');
+      fixedJson = fixedJson.replace(/"value":\s*"([0-9.]+)"/g, '"value": $1');
+      
+      // Parse and re-stringify to validate
+      const parsed = JSON.parse(fixedJson);
+      setJsonInput(JSON.stringify(parsed, null, 2));
+      setError(null);
+    } catch (err) {
+      setError('Could not auto-fix JSON. Please check the format.');
+    }
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
@@ -176,24 +194,44 @@ export default function JsonDropzone({ onAnalyze, isAnalyzing }: JsonDropzonePro
           <label className="form-label" style={{fontSize: '14px', fontWeight: 600}}>
             Or paste JSON directly
           </label>
-          <button
-            type="button"
-            onClick={handleLoadSample}
-            className="text-sm font-semibold px-4 py-2 rounded-lg transition-all"
-            style={{
-              color: 'var(--acc)',
-              background: 'rgba(143, 214, 255, 0.1)',
-              border: '1px solid rgba(143, 214, 255, 0.3)'
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.background = 'rgba(143, 214, 255, 0.2)';
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.background = 'rgba(143, 214, 255, 0.1)';
-            }}
-          >
-            Load Sample JSON
-          </button>
+          <div className="flex gap-2">
+            <button
+              type="button"
+              onClick={handleFixJson}
+              className="text-sm font-semibold px-4 py-2 rounded-lg transition-all"
+              style={{
+                color: 'var(--warning)',
+                background: 'rgba(255, 193, 7, 0.1)',
+                border: '1px solid rgba(255, 193, 7, 0.3)'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = 'rgba(255, 193, 7, 0.2)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = 'rgba(255, 193, 7, 0.1)';
+              }}
+            >
+              🔧 Fix JSON
+            </button>
+            <button
+              type="button"
+              onClick={handleLoadSample}
+              className="text-sm font-semibold px-4 py-2 rounded-lg transition-all"
+              style={{
+                color: 'var(--acc)',
+                background: 'rgba(143, 214, 255, 0.1)',
+                border: '1px solid rgba(143, 214, 255, 0.3)'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = 'rgba(143, 214, 255, 0.2)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = 'rgba(143, 214, 255, 0.1)';
+              }}
+            >
+              Load Sample JSON
+            </button>
+          </div>
         </div>
         <textarea
           value={jsonInput}
