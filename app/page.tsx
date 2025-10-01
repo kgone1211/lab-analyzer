@@ -8,7 +8,7 @@ import ResultsDisplay from '@/components/ResultsDisplay';
 import { AnalysisResult } from '@/lib/analysis/engine';
 
 export default function Home() {
-  const [activeTab, setActiveTab] = useState<'form' | 'json'>('form');
+  const [activeTab, setActiveTab] = useState<'form' | 'json'>('json');
   const [analysisResult, setAnalysisResult] = useState<AnalysisResult | null>(null);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [error, setError] = useState<string | null>(null);
