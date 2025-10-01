@@ -43,6 +43,7 @@ html,body{
   cursor:pointer;
   font-size:14px;
   transition:all 0.2s ease;
+  font-weight: 500;
 }
 
 .btn:hover{
@@ -50,14 +51,25 @@ html,body{
   background:#252b3a;
 }
 
+.btn:disabled{
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
 .btn-primary{
   background:var(--acc);
   color:#0f1115;
-  border-color:var(--acc);
+  border:none;
+  font-weight: 600;
 }
 
-.btn-primary:hover{
+.btn-primary:hover:not(:disabled){
   background:#7bc5e8;
+}
+
+.btn-primary:disabled{
+  background:#4a5563;
+  color:#6b7280;
 }
 
 .btn-success{
@@ -101,7 +113,7 @@ html,body{
 
 .form-input, .form-textarea, .form-select{
   width:100%;
-  background:#0b0d11;
+  background:#1a1d24;
   color:var(--ink);
   border:1px solid #2a2f3a;
   border-radius:6px;
@@ -109,9 +121,14 @@ html,body{
   font-size:14px;
 }
 
+.form-input::placeholder, .form-textarea::placeholder{
+  color:#6b7280;
+}
+
 .form-input:focus, .form-textarea:focus, .form-select:focus{
   outline:none;
   border-color:var(--acc);
+  background:#1f2633;
 }
 
 .form-textarea{
