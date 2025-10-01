@@ -92,15 +92,14 @@ export default function JsonDropzone({ onAnalyze, isAnalyzing }: JsonDropzonePro
         onDragLeave={handleDrag}
         onDragOver={handleDrag}
         onDrop={handleDrop}
-        className="border-2 border-dashed rounded-lg p-8 text-center transition-colors"
+        className="border-2 border-dashed rounded-lg p-6 text-center transition-colors"
         style={{
           borderColor: dragActive ? 'var(--acc)' : '#2a2f3a',
           background: dragActive ? 'rgba(143, 214, 255, 0.1)' : '#1f2633'
         }}
       >
         <svg
-          className="mx-auto h-12 w-12"
-          style={{color: 'var(--muted)'}}
+          style={{width: '40px', height: '40px', margin: '0 auto', color: 'var(--muted)'}}
           stroke="currentColor"
           fill="none"
           viewBox="0 0 48 48"
@@ -112,9 +111,9 @@ export default function JsonDropzone({ onAnalyze, isAnalyzing }: JsonDropzonePro
             strokeLinejoin="round"
           />
         </svg>
-        <div className="mt-4">
+        <div className="mt-3">
           <label htmlFor="file-upload" className="cursor-pointer">
-            <span className="font-medium" style={{color: 'var(--acc)'}}>
+            <span className="font-semibold" style={{color: 'var(--acc)', fontSize: '15px'}}>
               Upload a JSON file
             </span>
             <input
@@ -125,9 +124,9 @@ export default function JsonDropzone({ onAnalyze, isAnalyzing }: JsonDropzonePro
               onChange={handleFileInput}
             />
           </label>
-          <p className="text-sm mt-1" style={{color: 'var(--muted)'}}>or drag and drop</p>
+          <p className="mt-1" style={{color: 'var(--muted)', fontSize: '13px'}}>or drag and drop</p>
         </div>
-        <p className="text-xs mt-2" style={{color: 'var(--muted)'}}>JSON files only</p>
+        <p className="mt-2" style={{color: 'var(--muted)', fontSize: '12px'}}>JSON files only</p>
       </div>
 
       {/* Manual JSON Input */}
