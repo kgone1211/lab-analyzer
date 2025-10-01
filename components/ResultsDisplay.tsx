@@ -18,7 +18,7 @@ export default function ResultsDisplay({ result, onReset }: ResultsDisplayProps)
   const printRef = useRef<HTMLDivElement>(null);
 
   const handlePrint = useReactToPrint({
-    content: () => printRef.current,
+    contentRef: printRef,
     documentTitle: 'LabLens-Analysis-Report',
   });
 
