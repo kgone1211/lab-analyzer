@@ -170,31 +170,31 @@ export default function JsonDropzone({ onAnalyze, isAnalyzing }: JsonDropzonePro
         </p>
       </div>
 
-        {/* Manual JSON Input */}
-        <div>
-          <div className="flex justify-between items-center mb-3">
-            <label className="form-label" style={{fontSize: '14px', fontWeight: 600}}>
-              Or paste JSON directly
-            </label>
-            <button
-              type="button"
-              onClick={handleLoadSample}
-              className="text-sm font-semibold px-4 py-2 rounded-lg transition-all"
-              style={{
-                color: 'var(--acc)',
-                background: 'rgba(143, 214, 255, 0.1)',
-                border: '1px solid rgba(143, 214, 255, 0.3)'
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.background = 'rgba(143, 214, 255, 0.2)';
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.background = 'rgba(143, 214, 255, 0.1)';
-              }}
-            >
-              Load Sample JSON
-            </button>
-          </div>
+      {/* Manual JSON Input */}
+      <div>
+        <div className="flex justify-between items-center mb-3">
+          <label className="form-label" style={{fontSize: '14px', fontWeight: 600}}>
+            Or paste JSON directly
+          </label>
+          <button
+            type="button"
+            onClick={handleLoadSample}
+            className="text-sm font-semibold px-4 py-2 rounded-lg transition-all"
+            style={{
+              color: 'var(--acc)',
+              background: 'rgba(143, 214, 255, 0.1)',
+              border: '1px solid rgba(143, 214, 255, 0.3)'
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.background = 'rgba(143, 214, 255, 0.2)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.background = 'rgba(143, 214, 255, 0.1)';
+            }}
+          >
+            Load Sample JSON
+          </button>
+        </div>
         <textarea
           value={jsonInput}
           onChange={(e) => setJsonInput(e.target.value)}
