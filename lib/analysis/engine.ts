@@ -111,7 +111,7 @@ function analyzePanel(panel: Panel): PanelFinding {
       summary = analyzeVitaminD(findings, panel.markers);
       break;
     case "CBC":
-      summary = analyzeCBC(findings, panel.markers);
+      summary = analyzeCBC(findings);
       break;
   }
   
