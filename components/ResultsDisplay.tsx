@@ -122,7 +122,7 @@ export default function ResultsDisplay({ result, onReset }: ResultsDisplayProps)
       </div>
 
       {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-6 py-10">
+      <main className="max-w-7xl mx-auto px-6 py-10 pb-24">
         <div ref={printRef} className="space-y-6">
           {/* Overall Severity */}
           <div className="card p-6" style={{
@@ -258,10 +258,19 @@ export default function ResultsDisplay({ result, onReset }: ResultsDisplayProps)
         </div>
       </main>
 
-      {/* Footer Disclaimer */}
-      <footer style={{background: 'var(--card)', borderTop: '1px solid #2a2f3a'}} className="mt-12">
-        <div className="max-w-7xl mx-auto px-4 py-8">
-          <p className="text-center" style={{color: 'var(--ink)', fontSize: '15px', opacity: 0.8, lineHeight: '1.6'}}>
+      {/* Footer Disclaimer - Fixed at bottom */}
+      <footer style={{
+        position: 'fixed',
+        bottom: 0,
+        left: 0,
+        right: 0,
+        background: 'var(--card)', 
+        borderTop: '1px solid #2a2f3a',
+        zIndex: 10,
+        boxShadow: '0 -2px 8px rgba(0, 0, 0, 0.3)'
+      }}>
+        <div className="max-w-7xl mx-auto px-4 py-4">
+          <p className="text-center" style={{color: 'var(--ink)', fontSize: '13px', opacity: 0.8, lineHeight: '1.6'}}>
             © 2025 LabLens. This tool provides informational analysis only and does not constitute medical advice. 
             All lab results should be reviewed with a qualified healthcare provider.
           </p>
