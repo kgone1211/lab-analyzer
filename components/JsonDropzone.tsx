@@ -95,7 +95,7 @@ export default function JsonDropzone({ onAnalyze, isAnalyzing }: JsonDropzonePro
         className="border-2 border-dashed rounded-lg p-8 text-center transition-colors"
         style={{
           borderColor: dragActive ? 'var(--acc)' : '#2a2f3a',
-          background: dragActive ? '#2a3a4a' : '#0b0d11'
+          background: dragActive ? 'rgba(143, 214, 255, 0.1)' : '#1f2633'
         }}
       >
         <svg

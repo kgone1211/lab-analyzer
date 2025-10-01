@@ -88,24 +88,26 @@ export default function Home() {
       <main className="max-w-7xl mx-auto px-4 py-8">
         <div className="card">
           {/* Tabs */}
-          <div style={{borderBottom: '1px solid #2a2f3a'}} className="mb-6">
-            <div className="flex space-x-8">
+          <div style={{borderBottom: '1px solid #2a2f3a', marginBottom: '24px'}}>
+            <div className="flex space-x-6">
               <button
                 onClick={() => setActiveTab('form')}
-                className="pb-4 px-1 border-b-2 font-medium text-sm transition-colors"
+                className="pb-3 px-2 font-medium transition-colors"
                 style={{
-                  borderColor: activeTab === 'form' ? 'var(--acc)' : 'transparent',
-                  color: activeTab === 'form' ? 'var(--acc)' : 'var(--muted)'
+                  borderBottom: activeTab === 'form' ? '2px solid var(--acc)' : '2px solid transparent',
+                  color: activeTab === 'form' ? 'var(--acc)' : 'var(--muted)',
+                  fontSize: '15px'
                 }}
               >
                 Guided Form Entry
               </button>
               <button
                 onClick={() => setActiveTab('json')}
-                className="pb-4 px-1 border-b-2 font-medium text-sm transition-colors"
+                className="pb-3 px-2 font-medium transition-colors"
                 style={{
-                  borderColor: activeTab === 'json' ? 'var(--acc)' : 'transparent',
-                  color: activeTab === 'json' ? 'var(--acc)' : 'var(--muted)'
+                  borderBottom: activeTab === 'json' ? '2px solid var(--acc)' : '2px solid transparent',
+                  color: activeTab === 'json' ? 'var(--acc)' : 'var(--muted)',
+                  fontSize: '15px'
                 }}
               >
                 Upload JSON
@@ -137,7 +139,7 @@ export default function Home() {
       {/* Footer Disclaimer */}
       <footer style={{background: 'var(--card)', borderTop: '1px solid #2a2f3a'}} className="mt-12">
         <div className="max-w-7xl mx-auto px-4 py-6">
-          <p className="text-xs text-center" style={{color: 'var(--muted)'}}>
+          <p className="text-center" style={{color: 'var(--ink)', fontSize: '13px', opacity: 0.7}}>
             © 2025 LabLens. This tool provides informational analysis only and does not constitute medical advice. 
             All lab results should be reviewed with a qualified healthcare provider.
           </p>

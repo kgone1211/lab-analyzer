@@ -115,18 +115,19 @@ export default function PanelForm({ onAnalyze, isAnalyzing }: PanelFormProps) {
 
       {/* Panel Selection */}
       <div>
-        <h3 className="text-lg font-semibold mb-3" style={{color: 'var(--ink)'}}>Select Lab Panels</h3>
+        <h3 className="font-semibold mb-3" style={{color: 'var(--ink)', fontSize: '16px'}}>Select Lab Panels</h3>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
           {(Object.keys(PANEL_MARKERS) as PanelName[]).map(panel => (
             <button
               key={panel}
               type="button"
               onClick={() => togglePanel(panel)}
-              className="px-4 py-2 rounded-lg border-2 font-medium text-sm transition-colors"
+              className="px-4 py-2 rounded-lg font-medium transition-all"
               style={{
-                borderColor: selectedPanels.includes(panel) ? 'var(--acc)' : '#2a2f3a',
-                background: selectedPanels.includes(panel) ? '#2a3a4a' : '#0b0d11',
-                color: selectedPanels.includes(panel) ? 'var(--acc)' : 'var(--ink)'
+                border: selectedPanels.includes(panel) ? '1px solid var(--acc)' : '1px solid #2a2f3a',
+                background: selectedPanels.includes(panel) ? 'rgba(143, 214, 255, 0.1)' : '#1f2633',
+                color: selectedPanels.includes(panel) ? 'var(--acc)' : 'var(--ink)',
+                fontSize: '14px'
               }}
             >
               {panel}
@@ -138,11 +139,11 @@ export default function PanelForm({ onAnalyze, isAnalyzing }: PanelFormProps) {
       {/* Marker Inputs */}
       {selectedPanels.length > 0 && (
         <div className="space-y-6">
-          <h3 className="text-lg font-semibold" style={{color: 'var(--ink)'}}>Enter Values</h3>
+          <h3 className="font-semibold" style={{color: 'var(--ink)', fontSize: '16px'}}>Enter Values</h3>
           
           {selectedPanels.map(panel => (
-            <div key={panel} style={{background: '#0b0d11', border: '1px solid #2a2f3a'}} className="rounded-lg p-4">
-              <h4 className="font-semibold mb-3" style={{color: 'var(--ink)'}}>{panel}</h4>
+            <div key={panel} style={{background: '#1f2633', border: '1px solid #2a2f3a'}} className="rounded-lg p-4">
+              <h4 className="font-semibold mb-3" style={{color: 'var(--ink)', fontSize: '15px'}}>{panel}</h4>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {PANEL_MARKERS[panel].map(marker => (
                   <div key={marker} className="form-group">

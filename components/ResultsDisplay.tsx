@@ -240,7 +240,7 @@ export default function ResultsDisplay({ result, onReset }: ResultsDisplayProps)
       {/* Footer Disclaimer */}
       <footer style={{background: 'var(--card)', borderTop: '1px solid #2a2f3a'}} className="mt-12">
         <div className="max-w-7xl mx-auto px-4 py-6">
-          <p className="text-xs text-center" style={{color: 'var(--muted)'}}>
+          <p className="text-center" style={{color: 'var(--ink)', fontSize: '13px', opacity: 0.7}}>
             © 2025 LabLens. This tool provides informational analysis only and does not constitute medical advice. 
             All lab results should be reviewed with a qualified healthcare provider.
           </p>
