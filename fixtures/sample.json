@@ -1,0 +1,43 @@
+{
+  "patientId": "demo-123",
+  "collectedAt": "2025-09-01",
+  "panels": [
+    { 
+      "panelName": "A1C", 
+      "markers": [
+        { "name": "A1c", "value": 6.1, "unit": "%"}
+      ]
+    },
+    { 
+      "panelName": "LIPID", 
+      "markers": [
+        { "name": "Total Cholesterol", "value": 215, "unit": "mg/dL"},
+        { "name": "LDL", "value": 140, "unit": "mg/dL"},
+        { "name": "HDL", "value": 42, "unit": "mg/dL"},
+        { "name": "Triglycerides", "value": 180, "unit": "mg/dL"}
+      ]
+    },
+    { 
+      "panelName": "CMP", 
+      "markers": [
+        { "name": "BUN", "value": 24, "unit": "mg/dL"},
+        { "name": "Creatinine", "value": 0.9, "unit": "mg/dL"},
+        { "name": "Glucose", "value": 102, "unit": "mg/dL"}
+      ]
+    },
+    { 
+      "panelName": "THYROID", 
+      "markers": [
+        { "name": "TSH", "value": 5.2, "unit": "µIU/mL"},
+        { "name": "Free T4", "value": 0.7, "unit": "ng/dL"}
+      ]
+    },
+    { 
+      "panelName": "VITD", 
+      "markers": [
+        { "name": "Vitamin D 25-OH", "value": 24, "unit": "ng/mL"}
+      ]
+    }
+  ]
+}
+
