@@ -162,9 +162,12 @@ html,body{
 .error{
   background:#4a2c2a;
   color:var(--danger);
-  padding:12px;
-  border-radius:6px;
+  padding:16px;
+  border-radius:8px;
   margin-bottom:var(--gap);
+  min-height:60px;
+  max-height:300px;
+  overflow-y:auto;
 }
 
 .success{
