@@ -89,13 +89,14 @@ export default function Home() {
         <div className="card">
           {/* Tabs */}
           <div style={{borderBottom: '1px solid #2a2f3a', marginBottom: '24px'}}>
-            <div className="flex space-x-6">
+            <div className="flex space-x-3">
               <button
                 onClick={() => setActiveTab('form')}
-                className="pb-3 px-2 font-medium transition-colors"
+                className="pb-3 px-4 font-semibold transition-all rounded-t-lg"
                 style={{
-                  borderBottom: activeTab === 'form' ? '2px solid var(--acc)' : '2px solid transparent',
-                  color: activeTab === 'form' ? 'var(--acc)' : 'var(--muted)',
+                  borderBottom: activeTab === 'form' ? '3px solid var(--acc)' : '3px solid transparent',
+                  background: activeTab === 'form' ? 'rgba(143, 214, 255, 0.15)' : 'transparent',
+                  color: activeTab === 'form' ? 'var(--acc)' : 'var(--ink)',
                   fontSize: '15px'
                 }}
               >
@@ -103,10 +104,11 @@ export default function Home() {
               </button>
               <button
                 onClick={() => setActiveTab('json')}
-                className="pb-3 px-2 font-medium transition-colors"
+                className="pb-3 px-4 font-semibold transition-all rounded-t-lg"
                 style={{
-                  borderBottom: activeTab === 'json' ? '2px solid var(--acc)' : '2px solid transparent',
-                  color: activeTab === 'json' ? 'var(--acc)' : 'var(--muted)',
+                  borderBottom: activeTab === 'json' ? '3px solid var(--acc)' : '3px solid transparent',
+                  background: activeTab === 'json' ? 'rgba(143, 214, 255, 0.15)' : 'transparent',
+                  color: activeTab === 'json' ? 'var(--acc)' : 'var(--ink)',
                   fontSize: '15px'
                 }}
               >
