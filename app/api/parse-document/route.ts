@@ -1,7 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
 import OpenAI from 'openai';
-import pdf from 'pdf-parse/lib/pdf-parse.js';
 import mammoth from 'mammoth';
+
+// Dynamic import for pdf-parse to avoid TypeScript errors
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const pdf = require('pdf-parse');
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
