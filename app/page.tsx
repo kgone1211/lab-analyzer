@@ -60,7 +60,7 @@ export default function Home() {
     <div className="min-h-screen" style={{background: 'var(--bg)'}}>
       {/* Header */}
       <header style={{background: 'var(--card)', borderBottom: '1px solid #2a2f3a', boxShadow: '0 1px 3px rgba(0, 0, 0, 0.3)'}}>
-        <div className="max-w-7xl mx-auto px-6 py-5 relative">
+        <div className="max-w-7xl mx-auto px-6 py-6 relative">
           <div style={{position: 'absolute', left: '24px', top: '50%', transform: 'translateY(-50%)'}}>
             <div style={{
               width: '52px',
@@ -76,7 +76,7 @@ export default function Home() {
               🔬
             </div>
           </div>
-          <div className="text-center">
+          <div className="text-center" style={{paddingTop: '8px'}}>
             <h1 className="text-3xl font-bold" style={{color: 'var(--ink)', letterSpacing: '-0.02em', marginBottom: '4px'}}>
               LabLens
             </h1>

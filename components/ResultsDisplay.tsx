@@ -3,6 +3,8 @@
 import { useState, useRef } from 'react';
 import { AnalysisResult, MarkerStatus } from '@/lib/analysis/engine';
 import { useReactToPrint } from 'react-to-print';
+import jsPDF from 'jspdf';
+import html2canvas from 'html2canvas';
 
 interface ResultsDisplayProps {
   result: AnalysisResult;
@@ -34,6 +36,36 @@ export default function ResultsDisplay({ result, onReset }: ResultsDisplayProps)
     content: () => printRef.current,
     documentTitle: 'LabLens-Analysis-Report',
   });
+
+  const handleDownloadPDF = async () => {
+    if (!printRef.current) return;
+    
+    try {
+      const element = printRef.current;
+      const canvas = await html2canvas(element, {
+        scale: 2,
+        useCORS: true,
+        logging: false,
+        backgroundColor: '#0f1115'
+      });
+      
+      const imgData = canvas.toDataURL('image/png');
+      const pdf = new jsPDF({
+        orientation: 'portrait',
+        unit: 'mm',
+        format: 'a4'
+      });
+      
+      const imgWidth = 210; // A4 width in mm
+      const imgHeight = (canvas.height * imgWidth) / canvas.width;
+      
+      pdf.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
+      pdf.save(`LabLens-Report-${new Date().toISOString().split('T')[0]}.pdf`);
+    } catch (error) {
+      console.error('Error generating PDF:', error);
+      alert('Failed to generate PDF. Please try the Print option instead.');
+    }
+  };
 
   const handleRefine = async () => {
     setIsRefining(true);
@@ -68,7 +100,7 @@ export default function ResultsDisplay({ result, onReset }: ResultsDisplayProps)
     <div className="min-h-screen" style={{background: 'var(--bg)'}}>
       {/* Header */}
       <header style={{background: 'var(--card)', borderBottom: '1px solid #2a2f3a', boxShadow: '0 1px 3px rgba(0, 0, 0, 0.3)'}}>
-        <div className="max-w-7xl mx-auto px-6 py-5 relative">
+        <div className="max-w-7xl mx-auto px-6 py-6 relative">
           <div style={{position: 'absolute', left: '24px', top: '50%', transform: 'translateY(-50%)'}}>
             <div style={{
               width: '52px',
@@ -84,17 +116,26 @@ export default function ResultsDisplay({ result, onReset }: ResultsDisplayProps)
               🔬
             </div>
           </div>
-          <div className="text-center">
+          <div className="text-center" style={{paddingTop: '8px'}}>
             <h1 className="text-3xl font-bold" style={{color: 'var(--ink)', letterSpacing: '-0.02em', marginBottom: '4px'}}>LabLens</h1>
             <p className="text-sm" style={{color: 'var(--muted)'}}>Analysis Results</p>
           </div>
           <div className="flex space-x-3" style={{position: 'absolute', right: '24px', top: '50%', transform: 'translateY(-50%)'}}>
             <button
+              onClick={handleDownloadPDF}
+              className="btn px-5 py-2.5 rounded-lg transition-all font-semibold"
+              style={{fontSize: '14px'}}
+              title="Download as PDF"
+            >
+              📥 Download PDF
+            </button>
+            <button
               onClick={handlePrint}
               className="btn px-5 py-2.5 rounded-lg transition-all font-semibold"
               style={{fontSize: '14px'}}
+              title="Print report"
             >
-              Print / Save PDF
+              🖨️ Print
             </button>
             <button
               onClick={onReset}
