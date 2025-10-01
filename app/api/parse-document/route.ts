@@ -2,10 +2,6 @@ import { NextRequest, NextResponse } from 'next/server';
 import OpenAI from 'openai';
 import mammoth from 'mammoth';
 
-// Dynamic import for pdf-parse to avoid TypeScript errors
-// eslint-disable-next-line @typescript-eslint/no-require-imports
-const pdf = require('pdf-parse');
-
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
@@ -36,6 +32,9 @@ export async function POST(request: NextRequest) {
 
     // Extract text based on file type
     if (fileType === 'application/pdf') {
+      // Dynamically import pdf-parse only when needed to avoid build-time issues
+      // eslint-disable-next-line @typescript-eslint/no-require-imports
+      const pdf = require('pdf-parse');
       const data = await pdf(Buffer.from(buffer));
       extractedText = data.text;
     } else if (
