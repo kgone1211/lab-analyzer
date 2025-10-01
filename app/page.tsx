@@ -150,12 +150,12 @@ export default function Home() {
 
           {/* Error Display */}
           {error && (
-            <div className="error mb-6">
+            <div className="error mb-6" style={{maxHeight: '400px', overflow: 'auto'}}>
               <div className="flex">
                 <svg className="h-5 w-5 mt-0.5 mr-2" style={{color: 'var(--danger)', flexShrink: 0}} fill="currentColor" viewBox="0 0 20 20">
                   <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
                 </svg>
-                <div className="text-sm whitespace-pre-wrap flex-1">{error}</div>
+                <div className="text-sm whitespace-pre-wrap flex-1" style={{wordBreak: 'break-word'}}>{error}</div>
               </div>
             </div>
           )}

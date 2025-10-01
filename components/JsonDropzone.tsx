@@ -137,7 +137,7 @@ export default function JsonDropzone({ onAnalyze, isAnalyzing }: JsonDropzonePro
         }}
       >
         <svg
-          style={{width: '40px', height: '40px', margin: '0 auto', color: 'var(--muted)'}}
+          style={{width: '32px', height: '32px', margin: '0 auto', color: 'var(--muted)'}}
           stroke="currentColor"
           fill="none"
           viewBox="0 0 48 48"
