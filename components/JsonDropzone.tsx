@@ -190,58 +190,10 @@ export default function JsonDropzone({ onAnalyze, isAnalyzing }: JsonDropzonePro
 
       {/* Manual JSON Input */}
       <div>
-        <div className="flex justify-between items-center mb-3">
+        <div className="mb-3">
           <label className="form-label" style={{fontSize: '14px', fontWeight: 600}}>
             Or paste JSON directly
           </label>
-          <div className="flex gap-3">
-            <button
-              type="button"
-              onClick={handleFixJson}
-              className="text-sm font-semibold px-5 py-2.5 rounded-lg transition-all"
-              style={{
-                color: '#ffc107',
-                background: 'rgba(255, 193, 7, 0.15)',
-                border: '1px solid rgba(255, 193, 7, 0.4)',
-                boxShadow: '0 1px 3px rgba(0, 0, 0, 0.2)'
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.background = 'rgba(255, 193, 7, 0.25)';
-                e.currentTarget.style.transform = 'translateY(-1px)';
-                e.currentTarget.style.boxShadow = '0 2px 6px rgba(0, 0, 0, 0.3)';
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.background = 'rgba(255, 193, 7, 0.15)';
-                e.currentTarget.style.transform = 'translateY(0)';
-                e.currentTarget.style.boxShadow = '0 1px 3px rgba(0, 0, 0, 0.2)';
-              }}
-            >
-              🔧 Fix JSON
-            </button>
-            <button
-              type="button"
-              onClick={handleLoadSample}
-              className="text-sm font-semibold px-5 py-2.5 rounded-lg transition-all"
-              style={{
-                color: 'var(--acc)',
-                background: 'rgba(143, 214, 255, 0.15)',
-                border: '1px solid rgba(143, 214, 255, 0.4)',
-                boxShadow: '0 1px 3px rgba(0, 0, 0, 0.2)'
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.background = 'rgba(143, 214, 255, 0.25)';
-                e.currentTarget.style.transform = 'translateY(-1px)';
-                e.currentTarget.style.boxShadow = '0 2px 6px rgba(0, 0, 0, 0.3)';
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.background = 'rgba(143, 214, 255, 0.15)';
-                e.currentTarget.style.transform = 'translateY(0)';
-                e.currentTarget.style.boxShadow = '0 1px 3px rgba(0, 0, 0, 0.2)';
-              }}
-            >
-              Load Sample JSON
-            </button>
-          </div>
         </div>
         <textarea
           value={jsonInput}
