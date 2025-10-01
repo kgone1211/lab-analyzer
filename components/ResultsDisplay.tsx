@@ -11,21 +11,6 @@ interface ResultsDisplayProps {
   onReset: () => void;
 }
 
-const STATUS_COLORS: Record<MarkerStatus, { bg: string; text: string; border: string }> = {
-  CRITICAL_LOW: { bg: 'bg-red-100', text: 'text-red-800', border: 'border-red-300' },
-  LOW: { bg: 'bg-yellow-100', text: 'text-yellow-800', border: 'border-yellow-300' },
-  NORMAL: { bg: 'bg-green-100', text: 'text-green-800', border: 'border-green-300' },
-  HIGH: { bg: 'bg-orange-100', text: 'text-orange-800', border: 'border-orange-300' },
-  CRITICAL_HIGH: { bg: 'bg-red-100', text: 'text-red-800', border: 'border-red-300' },
-};
-
-const SEVERITY_COLORS = {
-  OK: { bg: 'bg-green-100', text: 'text-green-800' },
-  MILD: { bg: 'bg-yellow-100', text: 'text-yellow-800' },
-  MODERATE: { bg: 'bg-orange-100', text: 'text-orange-800' },
-  SEVERE: { bg: 'bg-red-100', text: 'text-red-800' },
-};
-
 export default function ResultsDisplay({ result, onReset }: ResultsDisplayProps) {
   const [refinedText, setRefinedText] = useState<string | null>(null);
   const [isRefining, setIsRefining] = useState(false);

@@ -5,7 +5,7 @@ import { Panel } from '@/lib/schemas';
 import sampleData from '@/fixtures/sample.json';
 
 interface PanelFormProps {
-  onAnalyze: (data: any) => void;
+  onAnalyze: (data: unknown) => void;
   isAnalyzing: boolean;
 }
 

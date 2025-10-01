@@ -12,9 +12,8 @@ export default function Home() {
   const [analysisResult, setAnalysisResult] = useState<AnalysisResult | null>(null);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [panels, setPanels] = useState<Panel[]>([]);
 
-  const handleAnalyze = async (submissionData: any) => {
+  const handleAnalyze = async (submissionData: unknown) => {
     setIsAnalyzing(true);
     setError(null);
     
@@ -34,7 +33,7 @@ export default function Home() {
         
         // Include validation details if available
         if (data.details && Array.isArray(data.details)) {
-          const detailsMsg = data.details.map((d: any) => 
+          const detailsMsg = data.details.map((d: { path: string[]; message: string }) => 
             `${d.path.join('.')}: ${d.message}`
           ).join('\n');
           errorMsg += `\n\nValidation errors:\n${detailsMsg}`;
@@ -58,7 +57,6 @@ export default function Home() {
   const handleReset = () => {
     setAnalysisResult(null);
     setError(null);
-    setPanels([]);
   };
 
   if (analysisResult) {

@@ -121,7 +121,7 @@ Only return valid JSON, no explanatory text.`,
     let parsedResult;
     try {
       parsedResult = JSON.parse(resultText);
-    } catch (parseError) {
+    } catch {
       return NextResponse.json(
         { error: 'AI returned invalid JSON. Please try again or use manual entry.' },
         { status: 500 }
@@ -134,10 +134,11 @@ Only return valid JSON, no explanatory text.`,
       extractedText: extractedText.substring(0, 500) + '...' // Return first 500 chars for debugging
     });
 
-  } catch (error: any) {
+  } catch (error) {
     console.error('Document parsing error:', error);
+    const errorMessage = error instanceof Error ? error.message : 'Failed to parse document';
     return NextResponse.json(
-      { error: error.message || 'Failed to parse document' },
+      { error: errorMessage },
       { status: 500 }
     );
   }

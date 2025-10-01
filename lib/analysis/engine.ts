@@ -1,5 +1,5 @@
 import { Submission, Panel, Marker } from '../schemas';
-import { getReferenceRange, ReferenceRange } from './ranges';
+import { getReferenceRange } from './ranges';
 
 export type MarkerStatus = "CRITICAL_LOW" | "LOW" | "NORMAL" | "HIGH" | "CRITICAL_HIGH";
 export type OverallSeverity = "OK" | "MILD" | "MODERATE" | "SEVERE";
@@ -230,7 +230,7 @@ function analyzeVitaminD(findings: MarkerFinding[], markers: Marker[]): string {
   return "Vitamin D reviewed.";
 }
 
-function analyzeCBC(findings: MarkerFinding[], markers: Marker[]): string {
+function analyzeCBC(findings: MarkerFinding[]): string {
   const abnormals = findings.filter(f => f.status !== "NORMAL");
   
   if (abnormals.length === 0) {

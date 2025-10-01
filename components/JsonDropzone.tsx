@@ -4,7 +4,7 @@ import { useState } from 'react';
 import sampleData from '@/fixtures/sample.json';
 
 interface JsonDropzoneProps {
-  onAnalyze: (data: any) => void;
+  onAnalyze: (data: unknown) => void;
   isAnalyzing: boolean;
 }
 
@@ -39,7 +39,7 @@ export default function JsonDropzone({ onAnalyze, isAnalyzing }: JsonDropzonePro
           const text = event.target?.result as string;
           const json = JSON.parse(text);
           setJsonInput(JSON.stringify(json, null, 2));
-        } catch (err) {
+        } catch {
           setError('Invalid JSON file');
         }
       };
@@ -78,8 +78,9 @@ export default function JsonDropzone({ onAnalyze, isAnalyzing }: JsonDropzonePro
           }
           
           setJsonInput(JSON.stringify(result.data, null, 2));
-        } catch (err: any) {
-          setError(err.message || 'Failed to parse document');
+        } catch (err) {
+          const errorMessage = err instanceof Error ? err.message : 'Failed to parse document';
+          setError(errorMessage);
         } finally {
           setIsParsing(false);
         }
@@ -90,10 +91,10 @@ export default function JsonDropzone({ onAnalyze, isAnalyzing }: JsonDropzonePro
         reader.onload = (event) => {
           try {
             const text = event.target?.result as string;
-            const json = JSON.parse(text);
-            setJsonInput(JSON.stringify(json, null, 2));
-          } catch (err) {
-            setError('Invalid JSON file');
+          const json = JSON.parse(text);
+          setJsonInput(JSON.stringify(json, null, 2));
+        } catch {
+          setError('Invalid JSON file');
           }
         };
         
@@ -104,28 +105,6 @@ export default function JsonDropzone({ onAnalyze, isAnalyzing }: JsonDropzonePro
     }
   };
 
-  const handleLoadSample = () => {
-    setJsonInput(JSON.stringify(sampleData, null, 2));
-    setError(null);
-  };
-
-  const handleFixJson = () => {
-    try {
-      let fixedJson = jsonInput;
-      
-      // Fix string values that should be numbers (e.g., "<0.1", ">100")
-      fixedJson = fixedJson.replace(/"value":\s*"<([0-9.]+)"/g, '"value": $1');
-      fixedJson = fixedJson.replace(/"value":\s*">([0-9.]+)"/g, '"value": $1');
-      fixedJson = fixedJson.replace(/"value":\s*"([0-9.]+)"/g, '"value": $1');
-      
-      // Parse and re-stringify to validate
-      const parsed = JSON.parse(fixedJson);
-      setJsonInput(JSON.stringify(parsed, null, 2));
-      setError(null);
-    } catch (err) {
-      setError('Could not auto-fix JSON. Please check the format.');
-    }
-  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -134,7 +113,7 @@ export default function JsonDropzone({ onAnalyze, isAnalyzing }: JsonDropzonePro
     try {
       const data = JSON.parse(jsonInput);
       onAnalyze(data);
-    } catch (err) {
+    } catch {
       setError('Invalid JSON format. Please check your input.');
     }
   };
