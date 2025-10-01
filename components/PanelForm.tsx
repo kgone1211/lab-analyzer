@@ -116,17 +116,17 @@ export default function PanelForm({ onAnalyze, isAnalyzing }: PanelFormProps) {
       {/* Panel Selection */}
       <div>
         <h3 className="font-semibold mb-3" style={{color: 'var(--ink)', fontSize: '16px'}}>Select Lab Panels</h3>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+        <div className="flex flex-wrap gap-3">
           {(Object.keys(PANEL_MARKERS) as PanelName[]).map(panel => (
             <button
               key={panel}
               type="button"
               onClick={() => togglePanel(panel)}
-              className="px-4 py-2 rounded-lg font-medium transition-all"
+              className="px-5 py-2.5 rounded-lg font-semibold transition-all"
               style={{
-                border: selectedPanels.includes(panel) ? '1px solid var(--acc)' : '1px solid #2a2f3a',
-                background: selectedPanels.includes(panel) ? 'rgba(143, 214, 255, 0.1)' : '#1f2633',
-                color: selectedPanels.includes(panel) ? 'var(--acc)' : 'var(--ink)',
+                border: selectedPanels.includes(panel) ? '2px solid var(--acc)' : '1px solid #2a2f3a',
+                background: selectedPanels.includes(panel) ? 'var(--acc)' : '#1f2633',
+                color: selectedPanels.includes(panel) ? '#0f1115' : 'var(--ink)',
                 fontSize: '14px'
               }}
             >
