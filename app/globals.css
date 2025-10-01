@@ -1,26 +1,193 @@
-@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+:root { 
+  --pad:14px; 
+  --gap:10px; 
+  --bg:#0f1115; 
+  --card:#171a21; 
+  --ink:#e8eaed; 
+  --muted:#aab2c0; 
+  --acc:#8fd6ff; 
+  --success:#8ef59a;
+  --warning:#ffd666;
+  --danger:#ff8e8e;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+*{
+  box-sizing:border-box;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+html,body{
+  margin:0;
+  padding:0;
+  background:var(--bg);
+  color:var(--ink);
+  font:15px/1.4 system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
+}
+
+.wrap{
+  max-width:1200px;
+  margin:0 auto;
+  padding:var(--pad);
+}
+
+/* Custom button styles */
+.btn{
+  background:#1f2633;
+  color:var(--ink);
+  border:1px solid #2a2f3a;
+  border-radius:8px;
+  padding:8px 16px;
+  cursor:pointer;
+  font-size:14px;
+  transition:all 0.2s ease;
+}
+
+.btn:hover{
+  border-color:var(--acc);
+  background:#252b3a;
+}
+
+.btn-primary{
+  background:var(--acc);
+  color:#0f1115;
+  border-color:var(--acc);
+}
+
+.btn-primary:hover{
+  background:#7bc5e8;
+}
+
+.btn-success{
+  background:var(--success);
+  color:#0f1115;
+  border-color:var(--success);
+}
+
+.btn-warning{
+  background:var(--warning);
+  color:#0f1115;
+  border-color:var(--warning);
+}
+
+.btn-danger{
+  background:var(--danger);
+  color:#0f1115;
+  border-color:var(--danger);
+}
+
+/* Card styles */
+.card{
+  background:var(--card);
+  border:1px solid #2a2f3a;
+  padding:var(--pad);
+  border-radius:10px;
+  margin-bottom:var(--gap);
+}
+
+/* Form styles */
+.form-group{
+  margin-bottom:var(--gap);
+}
+
+.form-label{
+  display:block;
+  margin-bottom:4px;
+  font-weight:600;
+  color:var(--ink);
+}
+
+.form-input, .form-textarea, .form-select{
+  width:100%;
+  background:#0b0d11;
+  color:var(--ink);
+  border:1px solid #2a2f3a;
+  border-radius:6px;
+  padding:8px 12px;
+  font-size:14px;
+}
+
+.form-input:focus, .form-textarea:focus, .form-select:focus{
+  outline:none;
+  border-color:var(--acc);
+}
+
+.form-textarea{
+  min-height:100px;
+  resize:vertical;
+}
+
+/* Loading and status */
+.loading{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:40px;
+  color:var(--muted);
+}
+
+.error{
+  background:#4a2c2a;
+  color:var(--danger);
+  padding:12px;
+  border-radius:6px;
+  margin-bottom:var(--gap);
+}
+
+.success{
+  background:#2a4a2a;
+  color:var(--success);
+  padding:12px;
+  border-radius:6px;
+  margin-bottom:var(--gap);
+}
+
+/* Metrics/Stats styles */
+.metrics{
+  display:grid;
+  grid-template-columns:repeat(auto-fit, minmax(200px, 1fr));
+  gap:var(--gap);
+  margin-bottom:var(--pad);
+}
+
+.metric{
+  background:var(--card);
+  border:1px solid #2a2f3a;
+  padding:var(--pad);
+  border-radius:10px;
+  text-align:center;
+}
+
+.metric-value{
+  font-size:32px;
+  font-weight:700;
+  margin-bottom:4px;
+}
+
+.metric-label{
+  color:var(--muted);
+  font-size:14px;
+}
+
+/* Status badges */
+.status-badge{
+  padding:4px 8px;
+  border-radius:4px;
+  font-size:12px;
+  font-weight:600;
+  display:inline-block;
+}
+
+.status-critical{background:#4a2c2a;color:var(--danger)}
+.status-high{background:#4a3a2a;color:var(--warning)}
+.status-normal{background:#2a4a2a;color:var(--success)}
+.status-low{background:#2a3a4a;color:var(--acc)}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .metrics {
+    grid-template-columns: 1fr 1fr;
   }
-}
-
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
 }

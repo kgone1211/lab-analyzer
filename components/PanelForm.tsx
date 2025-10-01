@@ -106,7 +106,8 @@ export default function PanelForm({ onAnalyze, isAnalyzing }: PanelFormProps) {
         <button
           type="button"
           onClick={handleLoadSample}
-          className="text-sm text-blue-600 hover:text-blue-800 font-medium"
+          className="text-sm font-medium"
+          style={{color: 'var(--acc)'}}
         >
           Load Sample Data
         </button>
@@ -114,18 +115,19 @@ export default function PanelForm({ onAnalyze, isAnalyzing }: PanelFormProps) {
 
       {/* Panel Selection */}
       <div>
-        <h3 className="text-lg font-semibold text-gray-900 mb-3">Select Lab Panels</h3>
+        <h3 className="text-lg font-semibold mb-3" style={{color: 'var(--ink)'}}>Select Lab Panels</h3>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
           {(Object.keys(PANEL_MARKERS) as PanelName[]).map(panel => (
             <button
               key={panel}
               type="button"
               onClick={() => togglePanel(panel)}
-              className={`px-4 py-2 rounded-lg border-2 font-medium text-sm transition-colors ${
-                selectedPanels.includes(panel)
-                  ? 'border-blue-500 bg-blue-50 text-blue-700'
-                  : 'border-gray-300 bg-white text-gray-700 hover:border-gray-400'
-              }`}
+              className="px-4 py-2 rounded-lg border-2 font-medium text-sm transition-colors"
+              style={{
+                borderColor: selectedPanels.includes(panel) ? 'var(--acc)' : '#2a2f3a',
+                background: selectedPanels.includes(panel) ? '#2a3a4a' : '#0b0d11',
+                color: selectedPanels.includes(panel) ? 'var(--acc)' : 'var(--ink)'
+              }}
             >
               {panel}
             </button>
@@ -136,24 +138,24 @@ export default function PanelForm({ onAnalyze, isAnalyzing }: PanelFormProps) {
       {/* Marker Inputs */}
       {selectedPanels.length > 0 && (
         <div className="space-y-6">
-          <h3 className="text-lg font-semibold text-gray-900">Enter Values</h3>
+          <h3 className="text-lg font-semibold" style={{color: 'var(--ink)'}}>Enter Values</h3>
           
           {selectedPanels.map(panel => (
-            <div key={panel} className="bg-gray-50 rounded-lg p-4">
-              <h4 className="font-semibold text-gray-900 mb-3">{panel}</h4>
+            <div key={panel} style={{background: '#0b0d11', border: '1px solid #2a2f3a'}} className="rounded-lg p-4">
+              <h4 className="font-semibold mb-3" style={{color: 'var(--ink)'}}>{panel}</h4>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {PANEL_MARKERS[panel].map(marker => (
-                  <div key={marker}>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <div key={marker} className="form-group">
+                    <label className="form-label">
                       {marker}
-                      <span className="text-gray-500 ml-1">({MARKER_UNITS[marker]})</span>
+                      <span style={{color: 'var(--muted)'}} className="ml-1">({MARKER_UNITS[marker]})</span>
                     </label>
                     <input
                       type="number"
                       step="0.01"
                       value={markerValues[marker] || ''}
                       onChange={(e) => handleMarkerChange(marker, e.target.value)}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      className="form-input"
                       placeholder="Enter value"
                     />
                   </div>
@@ -169,7 +171,7 @@ export default function PanelForm({ onAnalyze, isAnalyzing }: PanelFormProps) {
         <button
           type="submit"
           disabled={isAnalyzing || selectedPanels.length === 0}
-          className="px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors"
+          className="btn-primary px-6 py-3 font-semibold rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
         >
           {isAnalyzing ? 'Analyzing...' : 'Analyze Results'}
         </button>

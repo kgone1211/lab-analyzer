@@ -92,14 +92,15 @@ export default function JsonDropzone({ onAnalyze, isAnalyzing }: JsonDropzonePro
         onDragLeave={handleDrag}
         onDragOver={handleDrag}
         onDrop={handleDrop}
-        className={`border-2 border-dashed rounded-lg p-8 text-center transition-colors ${
-          dragActive
-            ? 'border-blue-500 bg-blue-50'
-            : 'border-gray-300 bg-gray-50'
-        }`}
+        className="border-2 border-dashed rounded-lg p-8 text-center transition-colors"
+        style={{
+          borderColor: dragActive ? 'var(--acc)' : '#2a2f3a',
+          background: dragActive ? '#2a3a4a' : '#0b0d11'
+        }}
       >
         <svg
-          className="mx-auto h-12 w-12 text-gray-400"
+          className="mx-auto h-12 w-12"
+          style={{color: 'var(--muted)'}}
           stroke="currentColor"
           fill="none"
           viewBox="0 0 48 48"
@@ -113,7 +114,7 @@ export default function JsonDropzone({ onAnalyze, isAnalyzing }: JsonDropzonePro
         </svg>
         <div className="mt-4">
           <label htmlFor="file-upload" className="cursor-pointer">
-            <span className="text-blue-600 hover:text-blue-800 font-medium">
+            <span className="font-medium" style={{color: 'var(--acc)'}}>
               Upload a JSON file
             </span>
             <input
@@ -124,21 +125,22 @@ export default function JsonDropzone({ onAnalyze, isAnalyzing }: JsonDropzonePro
               onChange={handleFileInput}
             />
           </label>
-          <p className="text-gray-500 text-sm mt-1">or drag and drop</p>
+          <p className="text-sm mt-1" style={{color: 'var(--muted)'}}>or drag and drop</p>
         </div>
-        <p className="text-xs text-gray-500 mt-2">JSON files only</p>
+        <p className="text-xs mt-2" style={{color: 'var(--muted)'}}>JSON files only</p>
       </div>
 
       {/* Manual JSON Input */}
       <div>
         <div className="flex justify-between items-center mb-2">
-          <label className="block text-sm font-medium text-gray-700">
+          <label className="form-label">
             Or paste JSON directly
           </label>
           <button
             type="button"
             onClick={handleLoadSample}
-            className="text-sm text-blue-600 hover:text-blue-800 font-medium"
+            className="text-sm font-medium"
+            style={{color: 'var(--acc)'}}
           >
             Load Sample JSON
           </button>
@@ -147,15 +149,15 @@ export default function JsonDropzone({ onAnalyze, isAnalyzing }: JsonDropzonePro
           value={jsonInput}
           onChange={(e) => setJsonInput(e.target.value)}
           rows={15}
-          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 font-mono text-sm"
+          className="form-textarea font-mono text-sm"
           placeholder='{\n  "panels": [\n    {\n      "panelName": "A1C",\n      "markers": [...]\n    }\n  ]\n}'
         />
       </div>
 
       {/* Error Display */}
       {error && (
-        <div className="bg-red-50 border border-red-200 rounded-md p-3">
-          <p className="text-sm text-red-800">{error}</p>
+        <div className="error">
+          <p className="text-sm">{error}</p>
         </div>
       )}
 
@@ -164,7 +166,7 @@ export default function JsonDropzone({ onAnalyze, isAnalyzing }: JsonDropzonePro
         <button
           type="submit"
           disabled={isAnalyzing || !jsonInput.trim()}
-          className="px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors"
+          className="btn-primary px-6 py-3 font-semibold rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
         >
           {isAnalyzing ? 'Analyzing...' : 'Analyze JSON'}
         </button>

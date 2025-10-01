@@ -65,24 +65,24 @@ export default function ResultsDisplay({ result, onReset }: ResultsDisplayProps)
   const aiRefineAvailable = process.env.NEXT_PUBLIC_AI_REFINE_ENABLED === 'true';
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
+    <div className="min-h-screen" style={{background: 'var(--bg)'}}>
       {/* Header */}
-      <header className="bg-white shadow-sm border-b border-gray-200">
+      <header style={{background: 'var(--card)', borderBottom: '1px solid #2a2f3a'}}>
         <div className="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900">LabLens Analysis Results</h1>
-            <p className="text-sm text-gray-600 mt-1">Review your lab analysis below</p>
+            <h1 className="text-3xl font-bold" style={{color: 'var(--ink)'}}>🔬 LabLens Analysis Results</h1>
+            <p className="text-sm mt-1" style={{color: 'var(--muted)'}}>Review your lab analysis below</p>
           </div>
           <div className="flex space-x-3">
             <button
               onClick={handlePrint}
-              className="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors"
+              className="btn px-4 py-2 rounded-lg transition-colors"
             >
               Print / Save PDF
             </button>
             <button
               onClick={onReset}
-              className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+              className="btn-primary px-4 py-2 rounded-lg transition-colors"
             >
               New Analysis
             </button>
@@ -91,13 +91,13 @@ export default function ResultsDisplay({ result, onReset }: ResultsDisplayProps)
       </header>
 
       {/* Disclaimer Banner */}
-      <div className="bg-yellow-50 border-b border-yellow-200">
+      <div style={{background: '#4a3a2a', borderBottom: '1px solid #5a4a3a'}}>
         <div className="max-w-7xl mx-auto px-4 py-3">
           <div className="flex items-start">
-            <svg className="h-5 w-5 text-yellow-600 mt-0.5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+            <svg className="h-5 w-5 mt-0.5 mr-2" style={{color: 'var(--warning)'}} fill="currentColor" viewBox="0 0 20 20">
               <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
             </svg>
-            <p className="text-sm text-yellow-800">
+            <p className="text-sm" style={{color: 'var(--warning)'}}>
               <strong>Important:</strong> This analysis is for informational purposes only. Please discuss these results with your healthcare provider.
             </p>
           </div>
@@ -108,20 +108,29 @@ export default function ResultsDisplay({ result, onReset }: ResultsDisplayProps)
       <main className="max-w-7xl mx-auto px-4 py-8">
         <div ref={printRef} className="space-y-6">
           {/* Overall Severity */}
-          <div className={`rounded-lg p-6 ${SEVERITY_COLORS[result.overallSeverity].bg}`}>
-            <h2 className={`text-xl font-bold ${SEVERITY_COLORS[result.overallSeverity].text}`}>
+          <div className="card p-6" style={{
+            background: result.overallSeverity === 'SEVERE' ? '#4a2c2a' : 
+                       result.overallSeverity === 'MODERATE' ? '#4a3a2a' :
+                       result.overallSeverity === 'MILD' ? '#2a3a4a' : '#2a4a2a',
+            border: '1px solid #2a2f3a'
+          }}>
+            <h2 className="text-xl font-bold" style={{
+              color: result.overallSeverity === 'SEVERE' ? 'var(--danger)' : 
+                     result.overallSeverity === 'MODERATE' ? 'var(--warning)' :
+                     result.overallSeverity === 'MILD' ? 'var(--acc)' : 'var(--success)'
+            }}>
               Overall Assessment: {result.overallSeverity}
             </h2>
           </div>
 
           {/* Summary Section */}
-          <div className="bg-white rounded-lg shadow-lg p-6">
-            <h2 className="text-2xl font-bold text-gray-900 mb-4">Summary</h2>
+          <div className="card p-6">
+            <h2 className="text-2xl font-bold mb-4" style={{color: 'var(--ink)'}}>Summary</h2>
             <ul className="space-y-2">
               {result.summaryBullets.map((bullet, index) => (
                 <li key={index} className="flex items-start">
-                  <span className="text-blue-600 mr-2">•</span>
-                  <span className="text-gray-700">{bullet}</span>
+                  <span className="mr-2" style={{color: 'var(--acc)'}}>•</span>
+                  <span style={{color: 'var(--ink)'}}>{bullet}</span>
                 </li>
               ))}
             </ul>
@@ -129,14 +138,14 @@ export default function ResultsDisplay({ result, onReset }: ResultsDisplayProps)
 
           {/* AI Refined Text */}
           {refinedText && (
-            <div className="bg-blue-50 rounded-lg shadow-lg p-6 border-2 border-blue-200">
+            <div className="card p-6" style={{border: '2px solid var(--acc)'}}>
               <div className="flex items-center mb-4">
-                <svg className="h-6 w-6 text-blue-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="h-6 w-6 mr-2" style={{color: 'var(--acc)'}} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
                 </svg>
-                <h2 className="text-xl font-bold text-blue-900">AI-Refined Explanation (Beta)</h2>
+                <h2 className="text-xl font-bold" style={{color: 'var(--acc)'}}>AI-Refined Explanation (Beta)</h2>
               </div>
-              <p className="text-gray-700 whitespace-pre-wrap">{refinedText}</p>
+              <p className="whitespace-pre-wrap" style={{color: 'var(--ink)'}}>{refinedText}</p>
             </div>
           )}
 
@@ -146,7 +155,7 @@ export default function ResultsDisplay({ result, onReset }: ResultsDisplayProps)
               <button
                 onClick={handleRefine}
                 disabled={isRefining}
-                className="px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors"
+                className="btn-primary px-6 py-3 font-semibold rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {isRefining ? 'Refining with AI...' : 'Refine with AI (Beta)'}
               </button>
@@ -154,43 +163,68 @@ export default function ResultsDisplay({ result, onReset }: ResultsDisplayProps)
           )}
 
           {refineError && (
-            <div className="bg-red-50 border border-red-200 rounded-lg p-4">
-              <p className="text-sm text-red-800">{refineError}</p>
+            <div className="error">
+              <p className="text-sm">{refineError}</p>
             </div>
           )}
 
           {/* Panel Findings */}
           <div className="space-y-6">
-            <h2 className="text-2xl font-bold text-gray-900">Detailed Findings</h2>
+            <h2 className="text-2xl font-bold" style={{color: 'var(--ink)'}}>Detailed Findings</h2>
             
             {result.panelFindings.map((panel, panelIndex) => (
-              <div key={panelIndex} className="bg-white rounded-lg shadow-lg p-6">
-                <h3 className="text-xl font-bold text-gray-900 mb-2">{panel.panelName}</h3>
+              <div key={panelIndex} className="card p-6">
+                <h3 className="text-xl font-bold mb-2" style={{color: 'var(--ink)'}}>{panel.panelName}</h3>
                 {panel.summary && (
-                  <p className="text-gray-600 mb-4 italic">{panel.summary}</p>
+                  <p className="mb-4 italic" style={{color: 'var(--muted)'}}>{panel.summary}</p>
                 )}
                 
                 <div className="space-y-3">
                   {panel.findings.map((finding, findingIndex) => {
-                    const colors = STATUS_COLORS[finding.status];
+                    const getBorderColor = (status: MarkerStatus) => {
+                      if (status.includes('CRITICAL')) return 'var(--danger)';
+                      if (status === 'LOW') return 'var(--warning)';
+                      if (status === 'NORMAL') return 'var(--success)';
+                      if (status === 'HIGH') return 'var(--warning)';
+                      return 'var(--muted)';
+                    };
+                    
+                    const getStatusBg = (status: MarkerStatus) => {
+                      if (status.includes('CRITICAL')) return '#4a2c2a';
+                      if (status === 'LOW') return '#4a3a2a';
+                      if (status === 'NORMAL') return '#2a4a2a';
+                      if (status === 'HIGH') return '#4a3a2a';
+                      return '#2a2f3a';
+                    };
+                    
                     return (
                       <div
                         key={findingIndex}
-                        className={`border-l-4 ${colors.border} bg-gray-50 p-4 rounded-r-lg`}
+                        className="p-4 rounded-r-lg"
+                        style={{
+                          borderLeft: `4px solid ${getBorderColor(finding.status)}`,
+                          background: '#0b0d11'
+                        }}
                       >
                         <div className="flex justify-between items-start">
                           <div className="flex-1">
                             <div className="flex items-center space-x-3">
-                              <h4 className="font-semibold text-gray-900">{finding.marker}</h4>
-                              <span className={`px-2 py-1 rounded-full text-xs font-medium ${colors.bg} ${colors.text}`}>
+                              <h4 className="font-semibold" style={{color: 'var(--ink)'}}>{finding.marker}</h4>
+                              <span 
+                                className="px-2 py-1 rounded-full text-xs font-medium" 
+                                style={{
+                                  background: getStatusBg(finding.status),
+                                  color: getBorderColor(finding.status)
+                                }}
+                              >
                                 {finding.status.replace(/_/g, ' ')}
                               </span>
                             </div>
-                            <p className="text-sm text-gray-600 mt-1">{finding.note}</p>
+                            <p className="text-sm mt-1" style={{color: 'var(--muted)'}}>{finding.note}</p>
                           </div>
                           <div className="text-right ml-4">
-                            <p className="font-bold text-gray-900">{finding.value}</p>
-                            <p className="text-sm text-gray-500">{finding.unit}</p>
+                            <p className="font-bold" style={{color: 'var(--ink)'}}>{finding.value}</p>
+                            <p className="text-sm" style={{color: 'var(--muted)'}}>{finding.unit}</p>
                           </div>
                         </div>
                       </div>
@@ -204,9 +238,9 @@ export default function ResultsDisplay({ result, onReset }: ResultsDisplayProps)
       </main>
 
       {/* Footer Disclaimer */}
-      <footer className="bg-gray-50 border-t border-gray-200 mt-12">
+      <footer style={{background: 'var(--card)', borderTop: '1px solid #2a2f3a'}} className="mt-12">
         <div className="max-w-7xl mx-auto px-4 py-6">
-          <p className="text-xs text-gray-600 text-center">
+          <p className="text-xs text-center" style={{color: 'var(--muted)'}}>
             © 2025 LabLens. This tool provides informational analysis only and does not constitute medical advice. 
             All lab results should be reviewed with a qualified healthcare provider.
           </p>
