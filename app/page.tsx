@@ -60,8 +60,8 @@ export default function Home() {
     <div className="min-h-screen" style={{background: 'var(--bg)'}}>
       {/* Header */}
       <header style={{background: 'var(--card)', borderBottom: '1px solid #2a2f3a', boxShadow: '0 1px 3px rgba(0, 0, 0, 0.3)'}}>
-        <div className="max-w-7xl mx-auto px-6 py-5">
-          <div className="flex items-center gap-4">
+        <div className="max-w-7xl mx-auto px-6 py-5 relative">
+          <div style={{position: 'absolute', left: '24px', top: '50%', transform: 'translateY(-50%)'}}>
             <div style={{
               width: '52px',
               height: '52px',
@@ -71,19 +71,18 @@ export default function Home() {
               alignItems: 'center',
               justifyContent: 'center',
               fontSize: '26px',
-              boxShadow: '0 4px 12px rgba(143, 214, 255, 0.3)',
-              flexShrink: 0
+              boxShadow: '0 4px 12px rgba(143, 214, 255, 0.3)'
             }}>
               🔬
             </div>
-            <div>
-              <h1 className="text-3xl font-bold" style={{color: 'var(--ink)', letterSpacing: '-0.02em', marginBottom: '4px'}}>
-                LabLens
-              </h1>
-              <p className="text-sm" style={{color: 'var(--muted)'}}>
-                Lab result insights
-              </p>
-            </div>
+          </div>
+          <div className="text-center">
+            <h1 className="text-3xl font-bold" style={{color: 'var(--ink)', letterSpacing: '-0.02em', marginBottom: '4px'}}>
+              LabLens
+            </h1>
+            <p className="text-sm" style={{color: 'var(--muted)'}}>
+              Lab result insights
+            </p>
           </div>
         </div>
       </header>
@@ -91,7 +90,7 @@ export default function Home() {
       {/* Disclaimer Banner */}
       <div style={{background: '#4a3a2a', borderBottom: '1px solid #5a4a3a', padding: '4px 0'}}>
         <div className="max-w-7xl mx-auto px-4">
-          <div className="flex items-center">
+          <div className="flex items-center justify-center">
             <svg style={{width: '11px', height: '11px', minWidth: '11px', minHeight: '11px', marginRight: '5px', color: 'var(--warning)', flexShrink: 0}} fill="currentColor" viewBox="0 0 20 20">
               <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
             </svg>
