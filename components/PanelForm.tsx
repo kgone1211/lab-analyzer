@@ -115,20 +115,38 @@ export default function PanelForm({ onAnalyze, isAnalyzing }: PanelFormProps) {
 
       {/* Panel Selection */}
       <div>
-        <h3 className="font-semibold mb-3" style={{color: 'var(--ink)', fontSize: '16px'}}>Select Lab Panels</h3>
+        <h3 className="font-semibold mb-4" style={{color: 'var(--ink)', fontSize: '16px'}}>Select Lab Panels</h3>
         <div className="flex flex-wrap gap-3 justify-between">
           {(Object.keys(PANEL_MARKERS) as PanelName[]).map(panel => (
             <button
               key={panel}
               type="button"
               onClick={() => togglePanel(panel)}
-              className="px-6 py-2.5 rounded-lg font-semibold transition-all flex-1"
+              className="px-6 py-3 rounded-lg font-semibold transition-all flex-1 relative overflow-hidden group"
               style={{
-                border: selectedPanels.includes(panel) ? '2px solid var(--acc)' : '1px solid #2a2f3a',
-                background: selectedPanels.includes(panel) ? 'var(--acc)' : '#1f2633',
+                border: selectedPanels.includes(panel) ? 'none' : '1px solid #2a2f3a',
+                background: selectedPanels.includes(panel) 
+                  ? 'linear-gradient(135deg, var(--acc) 0%, #7bc5e8 100%)' 
+                  : '#1f2633',
                 color: selectedPanels.includes(panel) ? '#0f1115' : 'var(--ink)',
                 fontSize: '14px',
-                minWidth: '90px'
+                minWidth: '90px',
+                boxShadow: selectedPanels.includes(panel) 
+                  ? '0 4px 12px rgba(143, 214, 255, 0.3)' 
+                  : 'none',
+                transform: selectedPanels.includes(panel) ? 'translateY(-1px)' : 'translateY(0)'
+              }}
+              onMouseEnter={(e) => {
+                if (!selectedPanels.includes(panel)) {
+                  e.currentTarget.style.background = '#252b3a';
+                  e.currentTarget.style.borderColor = 'var(--acc)';
+                }
+              }}
+              onMouseLeave={(e) => {
+                if (!selectedPanels.includes(panel)) {
+                  e.currentTarget.style.background = '#1f2633';
+                  e.currentTarget.style.borderColor = '#2a2f3a';
+                }
               }}
             >
               {panel}
