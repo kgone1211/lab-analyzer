@@ -258,31 +258,90 @@ export function analyzeSubmission(submission: Submission): AnalysisResult {
     overallSeverity = "MILD";
   }
   
-  // Generate summary bullets
+  // Generate comprehensive summary bullets
   const summaryBullets: string[] = [];
   
-  // Add critical findings first
-  if (criticals.length > 0) {
-    summaryBullets.push(`⚠️ ${criticals.length} critical value(s) detected - immediate clinical review recommended.`);
+  // Add header with overall status
+  if (abnormals.length === 0) {
+    summaryBullets.push("✅ All lab markers are within normal reference ranges - excellent overall health indicators.");
+  } else {
+    summaryBullets.push(`📊 Lab Analysis Summary: ${abnormals.length} marker(s) outside normal range across ${panelFindings.length} panel(s).`);
   }
   
-  // Add panel-specific summaries
+  // Add critical findings first with urgency
+  if (criticals.length > 0) {
+    summaryBullets.push(`⚠️ URGENT: ${criticals.length} critical value(s) detected requiring immediate clinical attention.`);
+    criticals.forEach(c => {
+      summaryBullets.push(`   • ${c.marker}: ${c.value} ${c.unit} (${c.status.replace('_', ' ')}) - ${c.note}`);
+    });
+  }
+  
+  // Add panel-specific summaries with context
   panelFindings.forEach(pf => {
     if (pf.summary) {
-      summaryBullets.push(`${pf.panelName}: ${pf.summary}`);
+      summaryBullets.push(`🔬 ${pf.panelName}: ${pf.summary}`);
     }
   });
   
-  // Add general summary
-  if (abnormals.length === 0) {
-    summaryBullets.push("✅ All markers within normal reference ranges.");
-  } else if (criticals.length === 0) {
-    summaryBullets.push(`${abnormals.length} marker(s) outside normal range. Review findings with your healthcare provider.`);
+  // List high priority abnormals (non-critical)
+  const highAbnormals = allFindings.filter(f => 
+    (f.status === "HIGH" || f.status === "LOW") && !f.status.includes("CRITICAL")
+  );
+  
+  if (highAbnormals.length > 0 && highAbnormals.length <= 5) {
+    summaryBullets.push("📌 Key findings to discuss with your provider:");
+    highAbnormals.forEach(a => {
+      summaryBullets.push(`   • ${a.marker}: ${a.value} ${a.unit} (${a.status}) - ${a.note}`);
+    });
+  } else if (highAbnormals.length > 5) {
+    summaryBullets.push(`📌 ${highAbnormals.length} markers outside normal range - see detailed findings below for complete review.`);
   }
   
-  // Add recommendations
-  if (overallSeverity !== "OK") {
-    summaryBullets.push("Consider discussing these results with your healthcare provider for proper interpretation and next steps.");
+  // Add specific recommendations based on findings
+  const recommendations: string[] = [];
+  
+  if (criticals.length > 0) {
+    recommendations.push("Contact your healthcare provider immediately to discuss critical values");
+  }
+  if (abnormals.length >= 5) {
+    recommendations.push("Comprehensive review with your doctor recommended due to multiple abnormal markers");
+  }
+  if (abnormals.length > 0 && abnormals.length < 5) {
+    recommendations.push("Schedule follow-up with your healthcare provider to discuss these findings");
+  }
+  
+  // Add pattern-based recommendations
+  const hasKidneyIssues = allFindings.some(f => 
+    (f.marker === "BUN" || f.marker === "Creatinine") && f.status !== "NORMAL"
+  );
+  const hasLiverIssues = allFindings.some(f => 
+    (f.marker === "ALT (SGPT)" || f.marker === "AST (SGOT)") && f.status !== "NORMAL"
+  );
+  const hasThyroidIssues = allFindings.some(f => 
+    (f.marker === "TSH" || f.marker === "Free T4") && f.status !== "NORMAL"
+  );
+  
+  if (hasKidneyIssues) {
+    recommendations.push("Consider discussing kidney function markers with your provider");
+  }
+  if (hasLiverIssues) {
+    recommendations.push("Liver enzyme levels may warrant further evaluation");
+  }
+  if (hasThyroidIssues) {
+    recommendations.push("Thyroid function abnormalities detected - endocrinology consultation may be beneficial");
+  }
+  
+  // Add recommendations to summary
+  if (recommendations.length > 0) {
+    summaryBullets.push("💡 Recommended next steps:");
+    recommendations.forEach(rec => {
+      summaryBullets.push(`   • ${rec}`);
+    });
+  }
+  
+  // Add positive reinforcement for normal results
+  if (abnormals.length === 0) {
+    summaryBullets.push("🎯 Continue maintaining your current healthy lifestyle and routine health monitoring.");
   }
   
   return {
