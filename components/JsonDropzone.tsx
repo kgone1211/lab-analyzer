@@ -12,6 +12,7 @@ export default function JsonDropzone({ onAnalyze, isAnalyzing }: JsonDropzonePro
   const [jsonInput, setJsonInput] = useState('');
   const [dragActive, setDragActive] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [isParsing, setIsParsing] = useState(false);
 
   const handleDrag = (e: React.DragEvent) => {
     e.preventDefault();
@@ -47,23 +48,59 @@ export default function JsonDropzone({ onAnalyze, isAnalyzing }: JsonDropzonePro
     }
   };
 
-  const handleFileInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileInput = async (e: React.ChangeEvent<HTMLInputElement>) => {
     setError(null);
     if (e.target.files && e.target.files[0]) {
       const file = e.target.files[0];
-      const reader = new FileReader();
+      const fileType = file.type;
       
-      reader.onload = (event) => {
+      // Check if it's a PDF or Word document
+      if (fileType === 'application/pdf' || 
+          fileType === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' ||
+          fileType === 'application/msword') {
+        
+        setIsParsing(true);
         try {
-          const text = event.target?.result as string;
-          const json = JSON.parse(text);
-          setJsonInput(JSON.stringify(json, null, 2));
-        } catch (err) {
-          setError('Invalid JSON file');
+          const formData = new FormData();
+          formData.append('file', file);
+          
+          const response = await fetch('/api/parse-document', {
+            method: 'POST',
+            body: formData,
+          });
+          
+          const result = await response.json();
+          
+          if (!response.ok) {
+            setError(result.error || 'Failed to parse document');
+            setIsParsing(false);
+            return;
+          }
+          
+          setJsonInput(JSON.stringify(result.data, null, 2));
+        } catch (err: any) {
+          setError(err.message || 'Failed to parse document');
+        } finally {
+          setIsParsing(false);
         }
-      };
-      
-      reader.readAsText(file);
+      } else if (fileType === 'application/json') {
+        // Handle JSON files as before
+        const reader = new FileReader();
+        
+        reader.onload = (event) => {
+          try {
+            const text = event.target?.result as string;
+            const json = JSON.parse(text);
+            setJsonInput(JSON.stringify(json, null, 2));
+          } catch (err) {
+            setError('Invalid JSON file');
+          }
+        };
+        
+        reader.readAsText(file);
+      } else {
+        setError('Unsupported file type. Please upload JSON, PDF, or Word document.');
+      }
     }
   };
 
@@ -115,19 +152,22 @@ export default function JsonDropzone({ onAnalyze, isAnalyzing }: JsonDropzonePro
         <div className="mt-3">
           <label htmlFor="file-upload" className="cursor-pointer">
             <span className="font-semibold" style={{color: 'var(--acc)', fontSize: '15px'}}>
-              Upload a JSON file
+              {isParsing ? 'Parsing document with AI...' : 'Upload lab results'}
             </span>
             <input
               id="file-upload"
               type="file"
               className="sr-only"
-              accept=".json"
+              accept=".json,.pdf,.doc,.docx,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/msword"
               onChange={handleFileInput}
+              disabled={isParsing}
             />
           </label>
           <p className="mt-1" style={{color: 'var(--muted)', fontSize: '13px'}}>or drag and drop</p>
         </div>
-        <p className="mt-2" style={{color: 'var(--muted)', fontSize: '12px'}}>JSON files only</p>
+        <p className="mt-2" style={{color: 'var(--muted)', fontSize: '12px'}}>
+          {isParsing ? 'AI is extracting lab data...' : 'PDF, Word, or JSON files'}
+        </p>
       </div>
 
         {/* Manual JSON Input */}
@@ -175,10 +215,10 @@ export default function JsonDropzone({ onAnalyze, isAnalyzing }: JsonDropzonePro
       <div className="flex justify-end">
         <button
           type="submit"
-          disabled={isAnalyzing || !jsonInput.trim()}
+          disabled={isAnalyzing || isParsing || !jsonInput.trim()}
           className="btn-primary px-6 py-3 font-semibold rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          {isAnalyzing ? 'Analyzing...' : 'Analyze JSON'}
+          {isParsing ? 'Parsing Document...' : isAnalyzing ? 'Analyzing...' : 'Analyze Results'}
         </button>
       </div>
     </form>

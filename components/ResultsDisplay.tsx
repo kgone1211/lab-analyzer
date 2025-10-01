@@ -68,24 +68,25 @@ export default function ResultsDisplay({ result, onReset }: ResultsDisplayProps)
     <div className="min-h-screen" style={{background: 'var(--bg)'}}>
       {/* Header */}
       <header style={{background: 'var(--card)', borderBottom: '1px solid #2a2f3a', boxShadow: '0 1px 3px rgba(0, 0, 0, 0.3)'}}>
-        <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
-          <div className="flex items-center space-x-3">
+        <div className="max-w-7xl mx-auto px-6 py-5 flex justify-between items-center">
+          <div className="flex items-center gap-4">
             <div style={{
-              width: '48px',
-              height: '48px',
+              width: '52px',
+              height: '52px',
               background: 'linear-gradient(135deg, var(--acc) 0%, #7bc5e8 100%)',
               borderRadius: '12px',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              fontSize: '24px',
-              boxShadow: '0 4px 12px rgba(143, 214, 255, 0.3)'
+              fontSize: '26px',
+              boxShadow: '0 4px 12px rgba(143, 214, 255, 0.3)',
+              flexShrink: 0
             }}>
               🔬
             </div>
             <div>
-              <h1 className="text-3xl font-bold" style={{color: 'var(--ink)', letterSpacing: '-0.02em'}}>LabLens</h1>
-              <p className="text-sm" style={{color: 'var(--muted)', marginTop: '2px'}}>Analysis Results</p>
+              <h1 className="text-3xl font-bold" style={{color: 'var(--ink)', letterSpacing: '-0.02em', marginBottom: '4px'}}>LabLens</h1>
+              <p className="text-sm" style={{color: 'var(--muted)'}}>Analysis Results</p>
             </div>
           </div>
           <div className="flex space-x-3">

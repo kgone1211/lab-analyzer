@@ -12,6 +12,7 @@ LabLens is a Next.js application that analyzes lab results against reference ran
 
 - ✅ **Guided Form Entry**: Manual input for common lab panels (CBC, CMP, Lipids, A1c, Thyroid, Vitamin D, Iron Panel)
 - ✅ **JSON Upload**: Drag-and-drop or paste JSON data for bulk analysis
+- 🆕 **PDF/Word Upload**: AI-powered extraction from lab result documents (requires OpenAI API key)
 - ✅ **Rule-Based Analysis**: Transparent, testable logic for marker classification
 - ✅ **Human-Readable Reports**: Clear summaries with prioritized findings
 - ✅ **Panel-Specific Insights**: Specialized analysis for each lab panel type
