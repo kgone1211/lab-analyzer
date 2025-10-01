@@ -119,31 +119,67 @@ export default function Home() {
       <main className="max-w-7xl mx-auto px-6 py-10 pb-24">
         <div className="card" style={{padding: '32px'}}>
           {/* Tabs */}
-          <div style={{borderBottom: '1px solid #2a2f3a', marginBottom: '24px'}}>
-            <div className="flex space-x-3">
+          <div style={{borderBottom: '2px solid #2a2f3a', marginBottom: '28px'}}>
+            <div className="flex gap-2">
               <button
                 onClick={() => setActiveTab('form')}
-                className="pb-3 px-4 font-semibold transition-all rounded-t-lg"
+                className="px-6 py-3 font-semibold transition-all relative"
                 style={{
+                  background: activeTab === 'form' 
+                    ? 'linear-gradient(to bottom, rgba(143, 214, 255, 0.2), rgba(143, 214, 255, 0.1))'
+                    : 'transparent',
+                  color: activeTab === 'form' ? 'var(--acc)' : 'var(--muted)',
+                  fontSize: '15px',
+                  borderTopLeftRadius: '10px',
+                  borderTopRightRadius: '10px',
                   borderBottom: activeTab === 'form' ? '3px solid var(--acc)' : '3px solid transparent',
-                  background: activeTab === 'form' ? 'rgba(143, 214, 255, 0.15)' : 'transparent',
-                  color: activeTab === 'form' ? 'var(--acc)' : 'var(--ink)',
-                  fontSize: '15px'
+                  marginBottom: '-2px',
+                  boxShadow: activeTab === 'form' ? '0 -2px 8px rgba(143, 214, 255, 0.2)' : 'none'
+                }}
+                onMouseEnter={(e) => {
+                  if (activeTab !== 'form') {
+                    e.currentTarget.style.color = 'var(--ink)';
+                    e.currentTarget.style.background = 'rgba(143, 214, 255, 0.05)';
+                  }
+                }}
+                onMouseLeave={(e) => {
+                  if (activeTab !== 'form') {
+                    e.currentTarget.style.color = 'var(--muted)';
+                    e.currentTarget.style.background = 'transparent';
+                  }
                 }}
               >
-                Guided Form Entry
+                📝 Guided Form Entry
               </button>
               <button
                 onClick={() => setActiveTab('json')}
-                className="pb-3 px-4 font-semibold transition-all rounded-t-lg"
+                className="px-6 py-3 font-semibold transition-all relative"
                 style={{
+                  background: activeTab === 'json' 
+                    ? 'linear-gradient(to bottom, rgba(143, 214, 255, 0.2), rgba(143, 214, 255, 0.1))'
+                    : 'transparent',
+                  color: activeTab === 'json' ? 'var(--acc)' : 'var(--muted)',
+                  fontSize: '15px',
+                  borderTopLeftRadius: '10px',
+                  borderTopRightRadius: '10px',
                   borderBottom: activeTab === 'json' ? '3px solid var(--acc)' : '3px solid transparent',
-                  background: activeTab === 'json' ? 'rgba(143, 214, 255, 0.15)' : 'transparent',
-                  color: activeTab === 'json' ? 'var(--acc)' : 'var(--ink)',
-                  fontSize: '15px'
+                  marginBottom: '-2px',
+                  boxShadow: activeTab === 'json' ? '0 -2px 8px rgba(143, 214, 255, 0.2)' : 'none'
+                }}
+                onMouseEnter={(e) => {
+                  if (activeTab !== 'json') {
+                    e.currentTarget.style.color = 'var(--ink)';
+                    e.currentTarget.style.background = 'rgba(143, 214, 255, 0.05)';
+                  }
+                }}
+                onMouseLeave={(e) => {
+                  if (activeTab !== 'json') {
+                    e.currentTarget.style.color = 'var(--muted)';
+                    e.currentTarget.style.background = 'transparent';
+                  }
                 }}
               >
-                Upload JSON
+                📄 Upload Document
               </button>
             </div>
           </div>
