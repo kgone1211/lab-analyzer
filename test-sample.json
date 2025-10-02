@@ -1,0 +1,49 @@
+{
+  "panels": [
+    {
+      "panelName": "CBC",
+      "markers": [
+        {
+          "name": "Hemoglobin",
+          "value": 14.2,
+          "unit": "g/dL",
+          "refLow": 12.0,
+          "refHigh": 15.5
+        },
+        {
+          "name": "Hematocrit",
+          "value": 42.5,
+          "unit": "%",
+          "refLow": 36.0,
+          "refHigh": 46.0
+        },
+        {
+          "name": "WBC",
+          "value": 7500,
+          "unit": "/uL",
+          "refLow": 4500,
+          "refHigh": 11000
+        }
+      ]
+    },
+    {
+      "panelName": "CMP",
+      "markers": [
+        {
+          "name": "Glucose",
+          "value": 95,
+          "unit": "mg/dL",
+          "refLow": 70,
+          "refHigh": 100
+        },
+        {
+          "name": "Creatinine",
+          "value": 1.1,
+          "unit": "mg/dL",
+          "refLow": 0.6,
+          "refHigh": 1.2
+        }
+      ]
+    }
+  ]
+}
