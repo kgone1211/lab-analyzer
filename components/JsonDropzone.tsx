@@ -71,7 +71,9 @@ export default function JsonDropzone({ onAnalyze, isAnalyzing }: JsonDropzonePro
           const result = await response.json();
           
           if (!response.ok) {
-            setError(result.error || 'Failed to parse document');
+            // Show a more helpful error message for PDF parsing issues
+            const errorMsg = result.error || 'Failed to parse document';
+            setError(errorMsg);
             setIsParsing(false);
             return;
           }
@@ -162,8 +164,14 @@ export default function JsonDropzone({ onAnalyze, isAnalyzing }: JsonDropzonePro
           <p className="mt-1" style={{color: 'var(--muted)', fontSize: '13px'}}>or drag and drop</p>
         </div>
         <p className="mt-2" style={{color: 'var(--muted)', fontSize: '12px'}}>
-          {isParsing ? 'AI is extracting lab data...' : 'PDF, Word, or JSON files'}
+          {isParsing ? 'AI is extracting lab data...' : 'JSON files only (PDF/Word temporarily unavailable)'}
         </p>
+        <div className="mt-3 p-3 rounded-lg border" style={{backgroundColor: 'rgba(255, 193, 7, 0.1)', borderColor: 'rgba(255, 193, 7, 0.3)'}}>
+          <p className="text-sm" style={{color: '#ffc107'}}>
+            <strong>Note:</strong> PDF and Word document parsing is temporarily unavailable on this deployment. 
+            Please use the JSON upload option or the guided form instead.
+          </p>
+        </div>
       </div>
 
       {/* Manual JSON Input */}

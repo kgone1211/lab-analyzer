@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
 import OpenAI from 'openai';
-import mammoth from 'mammoth';
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
@@ -27,45 +26,44 @@ export async function POST(request: NextRequest) {
     }
 
     const fileType = file.type;
-    const buffer = await file.arrayBuffer();
-    let extractedText = '';
 
-    // Extract text based on file type
+    // For PDFs, we'll use OpenAI's vision model to extract text from images
     if (fileType === 'application/pdf') {
-      // Temporarily disable PDF parsing due to Vercel deployment issues
       return NextResponse.json(
-        { 
-          error: 'PDF parsing is temporarily unavailable on this deployment. Please use one of these alternatives:\n\n1. Copy and paste the lab results as text\n2. Use the JSON upload option\n3. Convert your PDF to a Word document\n4. Type the values manually using the guided form' 
-        },
+        { error: 'PDF parsing is temporarily unavailable. Please use the JSON upload option or convert your PDF to a Word document.' },
         { status: 400 }
       );
-    } else if (
+    }
+
+    // For Word documents, we'll read the file as text (basic approach)
+    if (
       fileType === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' ||
       fileType === 'application/msword'
     ) {
-      const result = await mammoth.extractRawText({ buffer: Buffer.from(buffer) });
-      extractedText = result.value;
-    } else {
       return NextResponse.json(
-        { error: 'Unsupported file type. Please upload a PDF or Word document.' },
+        { error: 'Word document parsing is temporarily unavailable. Please use the JSON upload option or copy-paste the text manually.' },
         { status: 400 }
       );
     }
 
-    if (!extractedText || extractedText.trim().length === 0) {
-      return NextResponse.json(
-        { error: 'Could not extract text from document. The document may be empty or unreadable.' },
-        { status: 400 }
-      );
-    }
+    // For plain text files
+    if (fileType === 'text/plain') {
+      const text = await file.text();
+      
+      if (!text || text.trim().length === 0) {
+        return NextResponse.json(
+          { error: 'Could not extract text from document. The document may be empty or unreadable.' },
+          { status: 400 }
+        );
+      }
 
-    // Use OpenAI to parse the lab results
-    const completion = await openai.chat.completions.create({
-      model: 'gpt-4o-mini',
-      messages: [
-        {
-          role: 'system',
-          content: `You are a medical lab result parser. Extract lab results from the provided text and convert them to JSON format.
+      // Use OpenAI to parse the lab results
+      const completion = await openai.chat.completions.create({
+        model: 'gpt-4o-mini',
+        messages: [
+          {
+            role: 'system',
+            content: `You are a medical lab result parser. Extract lab results from the provided text and convert them to JSON format.
 
 The JSON must follow this exact schema:
 {
@@ -103,40 +101,46 @@ Panel types:
 
 Extract ALL markers you can find. If reference ranges are provided in the document, include them as refLow/refHigh.
 Only return valid JSON, no explanatory text.`,
-        },
-        {
-          role: 'user',
-          content: `Extract lab results from this document:\n\n${extractedText}`,
-        },
-      ],
-      temperature: 0.1,
-      response_format: { type: 'json_object' },
-    });
+          },
+          {
+            role: 'user',
+            content: `Extract lab results from this document:\n\n${text}`,
+          },
+        ],
+        temperature: 0.1,
+        response_format: { type: 'json_object' },
+      });
 
-    const resultText = completion.choices[0]?.message?.content;
-    if (!resultText) {
-      return NextResponse.json(
-        { error: 'AI failed to parse the document. Please try again or use JSON upload.' },
-        { status: 500 }
-      );
+      const resultText = completion.choices[0]?.message?.content;
+      if (!resultText) {
+        return NextResponse.json(
+          { error: 'AI failed to parse the document. Please try again or use JSON upload.' },
+          { status: 500 }
+        );
+      }
+
+      // Parse and validate the JSON
+      let parsedResult;
+      try {
+        parsedResult = JSON.parse(resultText);
+      } catch {
+        return NextResponse.json(
+          { error: 'AI returned invalid JSON. Please try again or use manual entry.' },
+          { status: 500 }
+        );
+      }
+
+      return NextResponse.json({
+        success: true,
+        data: parsedResult,
+        extractedText: text.substring(0, 500) + '...' // Return first 500 chars for debugging
+      });
     }
 
-    // Parse and validate the JSON
-    let parsedResult;
-    try {
-      parsedResult = JSON.parse(resultText);
-    } catch {
-      return NextResponse.json(
-        { error: 'AI returned invalid JSON. Please try again or use manual entry.' },
-        { status: 500 }
-      );
-    }
-
-    return NextResponse.json({
-      success: true,
-      data: parsedResult,
-      extractedText: extractedText.substring(0, 500) + '...' // Return first 500 chars for debugging
-    });
+    return NextResponse.json(
+      { error: 'Unsupported file type. Please upload a text file (.txt) or use JSON upload.' },
+      { status: 400 }
+    );
 
   } catch (error) {
     console.error('Document parsing error:', error);
@@ -147,4 +151,3 @@ Only return valid JSON, no explanatory text.`,
     );
   }
 }
-
