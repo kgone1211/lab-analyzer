@@ -163,12 +163,12 @@ export default function JsonDropzone({ onAnalyze, isAnalyzing }: JsonDropzonePro
           </label>
           <p className="mt-1" style={{color: 'var(--muted)', fontSize: '13px'}}>or drag and drop</p>
         </div>
-        <p className="mt-2" style={{color: 'var(--muted)', fontSize: '12px'}}>
-          {isParsing ? 'AI is extracting lab data...' : 'PDF, Word, or JSON files'}
-        </p>
-        <div className="mt-3 p-3 rounded-lg border" style={{backgroundColor: 'rgba(34, 197, 94, 0.1)', borderColor: 'rgba(34, 197, 94, 0.3)'}}>
-          <p className="text-sm" style={{color: '#22c55e'}}>
-            <strong>✓ AI-Powered:</strong> PDF and Word documents are parsed using advanced AI to extract lab results automatically.
+            <p className="mt-2" style={{color: 'var(--muted)', fontSize: '12px'}}>
+              {isParsing ? 'AI is extracting lab data...' : 'Word (.docx), JSON files, or PDF (with limitations)'}
+            </p>
+        <div className="mt-3 p-3 rounded-lg border" style={{backgroundColor: 'rgba(59, 130, 246, 0.1)', borderColor: 'rgba(59, 130, 246, 0.3)'}}>
+          <p className="text-sm" style={{color: '#3b82f6'}}>
+            <strong>📄 Document Support:</strong> Word documents (.docx) work perfectly! For PDFs, we recommend converting to Word format or using the guided form.
           </p>
         </div>
       </div>

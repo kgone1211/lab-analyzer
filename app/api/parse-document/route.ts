@@ -33,19 +33,25 @@ export async function POST(request: NextRequest) {
     // Extract text based on file type
     if (fileType === 'application/pdf') {
       try {
-        // Convert PDF to base64 and use OpenAI Vision API
-        const base64 = Buffer.from(buffer).toString('base64');
-        
-        // Use OpenAI Vision API to extract text from PDF
+        // Use pdf-parse for text extraction, then AI for parsing
+        const { default: pdfParse } = await import('pdf-parse');
+        const data = await pdfParse(Buffer.from(buffer));
+        extractedText = data.text;
+
+        if (!extractedText || extractedText.trim().length === 0) {
+          return NextResponse.json(
+            { error: 'Could not extract text from PDF. The document may be image-based or corrupted. Please try a different file or use manual entry.' },
+            { status: 400 }
+          );
+        }
+
+        // Use OpenAI to parse the extracted text
         const completion = await openai.chat.completions.create({
-          model: 'gpt-4o',
+          model: 'gpt-4o-mini',
           messages: [
             {
-              role: 'user',
-              content: [
-                {
-                  type: 'text',
-                  text: `Extract all lab results from this PDF document and convert them to JSON format. Look for any lab values, reference ranges, and panel information.
+              role: 'system',
+              content: `You are a medical lab result parser. Extract lab results from the provided text and convert them to JSON format.
 
 The JSON must follow this exact schema:
 {
@@ -82,15 +88,11 @@ Panel types:
 - IRON: Ferritin, Serum Iron, TIBC, Transferrin Saturation
 
 Extract ALL markers you can find. If reference ranges are provided in the document, include them as refLow/refHigh.
-Only return valid JSON, no explanatory text.`
-                },
-                {
-                  type: 'image_url',
-                  image_url: {
-                    url: `data:application/pdf;base64,${base64}`,
-                  },
-                },
-              ],
+Only return valid JSON, no explanatory text.`,
+            },
+            {
+              role: 'user',
+              content: `Extract lab results from this PDF document:\n\n${extractedText}`,
             },
           ],
           temperature: 0.1,
@@ -119,13 +121,13 @@ Only return valid JSON, no explanatory text.`
         return NextResponse.json({
           success: true,
           data: parsedResult,
-          extractedText: 'PDF parsed using AI Vision API'
+          extractedText: extractedText.substring(0, 500) + '...'
         });
 
       } catch (error) {
-        console.error('PDF Vision API error:', error);
+        console.error('PDF parsing error:', error);
         return NextResponse.json(
-          { error: 'Failed to parse PDF using AI. Please try a different file or use manual entry.' },
+          { error: 'Failed to parse PDF. This may be an image-based PDF or the file may be corrupted. Please try a different file, use the guided form, or upload a Word document instead.' },
           { status: 400 }
         );
       }
