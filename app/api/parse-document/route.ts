@@ -107,11 +107,16 @@ Only return valid JSON, no explanatory text.`,
           );
         }
 
+        console.log('AI returned PDF parsing result:', resultText);
+
         // Parse and validate the JSON
         let parsedResult;
         try {
           parsedResult = JSON.parse(resultText);
-        } catch {
+          console.log('Parsed PDF result:', JSON.stringify(parsedResult, null, 2));
+        } catch (parseError) {
+          console.error('Failed to parse AI JSON response:', parseError);
+          console.error('Raw AI response:', resultText);
           return NextResponse.json(
             { error: 'AI returned invalid JSON. Please try again or use manual entry.' },
             { status: 500 }
