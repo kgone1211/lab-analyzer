@@ -63,7 +63,7 @@ export default function JsonDropzone({ onAnalyze, isAnalyzing }: JsonDropzonePro
           const formData = new FormData();
           formData.append('file', file);
           
-          const response = await fetch('/api/parse-document', {
+          const response = await fetch('/api/parse-document-v2', {
             method: 'POST',
             body: formData,
           });
@@ -164,12 +164,11 @@ export default function JsonDropzone({ onAnalyze, isAnalyzing }: JsonDropzonePro
           <p className="mt-1" style={{color: 'var(--muted)', fontSize: '13px'}}>or drag and drop</p>
         </div>
         <p className="mt-2" style={{color: 'var(--muted)', fontSize: '12px'}}>
-          {isParsing ? 'AI is extracting lab data...' : 'JSON files only (PDF/Word temporarily unavailable)'}
+          {isParsing ? 'AI is extracting lab data...' : 'PDF, Word, or JSON files'}
         </p>
-        <div className="mt-3 p-3 rounded-lg border" style={{backgroundColor: 'rgba(255, 193, 7, 0.1)', borderColor: 'rgba(255, 193, 7, 0.3)'}}>
-          <p className="text-sm" style={{color: '#ffc107'}}>
-            <strong>Note:</strong> PDF and Word document parsing is temporarily unavailable on this deployment. 
-            Please use the JSON upload option or the guided form instead.
+        <div className="mt-3 p-3 rounded-lg border" style={{backgroundColor: 'rgba(34, 197, 94, 0.1)', borderColor: 'rgba(34, 197, 94, 0.3)'}}>
+          <p className="text-sm" style={{color: '#22c55e'}}>
+            <strong>✓ AI-Powered:</strong> PDF and Word documents are parsed using advanced AI to extract lab results automatically.
           </p>
         </div>
       </div>

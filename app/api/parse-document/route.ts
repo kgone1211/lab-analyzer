@@ -32,13 +32,18 @@ export async function POST(request: NextRequest) {
 
     // Extract text based on file type
     if (fileType === 'application/pdf') {
-      // Temporarily disable PDF parsing due to Vercel deployment issues
-      return NextResponse.json(
-        { 
-          error: 'PDF parsing is temporarily unavailable on this deployment. Please use one of these alternatives:\n\n1. Copy and paste the lab results as text\n2. Use the JSON upload option\n3. Convert your PDF to a Word document\n4. Type the values manually using the guided form' 
-        },
-        { status: 400 }
-      );
+      try {
+        // Use dynamic import to avoid build-time issues
+        const { default: pdfParse } = await import('pdf-parse');
+        const data = await pdfParse(Buffer.from(buffer));
+        extractedText = data.text;
+      } catch (pdfError) {
+        console.error('PDF parsing error:', pdfError);
+        return NextResponse.json(
+          { error: 'Failed to parse PDF. Please try a different file or use manual entry.' },
+          { status: 400 }
+        );
+      }
     } else if (
       fileType === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' ||
       fileType === 'application/msword'
