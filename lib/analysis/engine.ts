@@ -51,8 +51,22 @@ function analyzeMarker(marker: Marker): MarkerFinding {
   
   const refLow = marker.refLow ?? refRange?.low ?? 0;
   const refHigh = marker.refHigh ?? refRange?.high ?? 999999;
-  const criticalLow = refRange?.criticalLow;
-  const criticalHigh = refRange?.criticalHigh;
+  
+  // Only use critical ranges if no custom reference ranges are provided
+  // When custom ranges are provided, calculate critical ranges as 20% beyond bounds
+  let criticalLow: number | undefined;
+  let criticalHigh: number | undefined;
+  
+  if (marker.refLow !== undefined || marker.refHigh !== undefined) {
+    // Custom ranges provided - calculate critical ranges as 20% beyond bounds
+    const range = refHigh - refLow;
+    criticalLow = refLow - (range * 0.2);
+    criticalHigh = refHigh + (range * 0.2);
+  } else {
+    // Use default critical ranges
+    criticalLow = refRange?.criticalLow;
+    criticalHigh = refRange?.criticalHigh;
+  }
   
   const status = classify(marker.value, refLow, refHigh, criticalLow, criticalHigh);
   
