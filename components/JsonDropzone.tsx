@@ -63,7 +63,7 @@ export default function JsonDropzone({ onAnalyze, isAnalyzing }: JsonDropzonePro
           const formData = new FormData();
           formData.append('file', file);
           
-          const response = await fetch('/api/parse-document-v2', {
+          const response = await fetch('/api/parse-document', {
             method: 'POST',
             body: formData,
           });

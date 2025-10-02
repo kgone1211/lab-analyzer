@@ -336,7 +336,7 @@ function getMarkerGuidance(markerName: string, status: MarkerStatus): string {
     return "Consult with your healthcare provider for interpretation specific to your health history.";
   }
   
-  return isLow ? markerGuidance.low : markerGuidance.high;
+  return isLow ? markerGuidance.low : (isHigh ? markerGuidance.high : "Value appears normal.");
 }
 
 export function analyzeSubmission(submission: Submission): AnalysisResult {

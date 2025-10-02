@@ -1,12 +1,9 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  experimental: {
-    serverComponentsExternalPackages: ['pdf-parse']
-  },
+  serverExternalPackages: ['pdf-parse'],
   webpack: (config, { isServer }) => {
     if (isServer) {
-      // Don't externalize pdf-parse for server-side usage
       config.resolve = config.resolve || {};
       config.resolve.fallback = {
         ...config.resolve.fallback,
