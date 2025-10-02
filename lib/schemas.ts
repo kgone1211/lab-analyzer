@@ -9,7 +9,10 @@ export const MarkerSchema = z.object({
 });
 
 export const PanelSchema = z.object({
-  panelName: z.enum(["CBC","CMP","LIPID","A1C","THYROID","VITD","IRON"]),
+  panelName: z.enum([
+    "CBC","CMP","LIPID","A1C","THYROID","VITD","IRON",
+    "TESTOSTERONE","HORMONE","REPRODUCTIVE","LIVER","KIDNEY","CARDIO"
+  ]),
   markers: z.array(MarkerSchema).min(1),
 });
 

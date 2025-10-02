@@ -49,7 +49,7 @@ The JSON must follow this exact schema:
 {
   "panels": [
     {
-      "panelName": "CBC" | "CMP" | "LIPID" | "A1C" | "THYROID" | "VITD" | "IRON",
+      "panelName": "CBC" | "CMP" | "LIPID" | "A1C" | "THYROID" | "VITD" | "IRON" | "TESTOSTERONE" | "HORMONE" | "REPRODUCTIVE" | "LIVER" | "KIDNEY" | "CARDIO",
       "markers": [
         {
           "name": "marker name",
@@ -158,7 +158,7 @@ The JSON must follow this exact schema:
 {
   "panels": [
     {
-      "panelName": "CBC" | "CMP" | "LIPID" | "A1C" | "THYROID" | "VITD" | "IRON",
+      "panelName": "CBC" | "CMP" | "LIPID" | "A1C" | "THYROID" | "VITD" | "IRON" | "TESTOSTERONE" | "HORMONE" | "REPRODUCTIVE" | "LIVER" | "KIDNEY" | "CARDIO",
       "markers": [
         {
           "name": "marker name",

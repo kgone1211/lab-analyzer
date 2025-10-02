@@ -621,7 +621,7 @@ export function analyzeSubmission(submission: Submission): AnalysisResult {
     overallSeverity,
     summaryBullets,
     panelFindings,
-    symptomFindings,
+    symptomFindings: symptomFindings || [],
   };
 }
 
@@ -785,6 +785,60 @@ function analyzeSymptoms(panelFindings: PanelFinding[], overallSeverity: Overall
           'Unusual food cravings (pica)',
           'Restless legs syndrome'
         ], 'moderate', 'Low iron levels can cause iron deficiency anemia');
+        break;
+
+      case 'TESTOSTERONE':
+      case 'HORMONE':
+      case 'REPRODUCTIVE':
+        addSymptom('Hormonal Imbalance', [
+          'Fatigue and low energy',
+          'Changes in mood or irritability',
+          'Sleep disturbances',
+          'Changes in libido',
+          'Weight changes',
+          'Muscle weakness',
+          'Changes in body hair',
+          'Hot flashes or night sweats'
+        ], 'moderate', 'Abnormal hormone levels may indicate hormonal imbalance');
+        break;
+
+      case 'LIVER':
+        addSymptom('Liver Function Issues', [
+          'Fatigue and weakness',
+          'Nausea and vomiting',
+          'Abdominal pain or swelling',
+          'Yellowing of skin or eyes (jaundice)',
+          'Dark urine',
+          'Pale stools',
+          'Loss of appetite',
+          'Itchy skin'
+        ], 'moderate', 'Abnormal liver markers may indicate liver dysfunction');
+        break;
+
+      case 'KIDNEY':
+        addSymptom('Kidney Function Issues', [
+          'Fatigue and weakness',
+          'Swelling in feet, ankles, or face',
+          'Changes in urination frequency',
+          'Foamy or dark urine',
+          'High blood pressure',
+          'Nausea and vomiting',
+          'Loss of appetite',
+          'Difficulty concentrating'
+        ], 'moderate', 'Abnormal kidney markers may indicate kidney dysfunction');
+        break;
+
+      case 'CARDIO':
+        addSymptom('Cardiovascular Risk', [
+          'Chest pain or pressure',
+          'Shortness of breath',
+          'Fatigue during activity',
+          'Leg pain during walking',
+          'High blood pressure',
+          'Irregular heartbeat',
+          'Dizziness or lightheadedness',
+          'Swelling in legs or feet'
+        ], 'moderate', 'Abnormal cardiovascular markers increase heart disease risk');
         break;
     }
   }

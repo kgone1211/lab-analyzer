@@ -184,7 +184,7 @@ export default function ResultsDisplay({ result, onReset }: ResultsDisplayProps)
           </div>
 
           {/* Symptom Findings */}
-          {result.symptomFindings && result.symptomFindings.length > 0 && (
+          {result.symptomFindings && Array.isArray(result.symptomFindings) && result.symptomFindings.length > 0 && (
             <div className="card p-8">
               <h2 className="text-2xl font-bold mb-5" style={{color: 'var(--ink)', letterSpacing: '-0.02em'}}>Possible Symptoms & Clinical Findings</h2>
               <div className="space-y-6">
