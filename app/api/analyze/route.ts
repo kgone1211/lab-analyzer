@@ -6,13 +6,18 @@ export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
     
+    console.log('Received data for analysis:', JSON.stringify(body, null, 2));
+    
     // Validate the submission
     const parseResult = SubmissionSchema.safeParse(body);
     
     if (!parseResult.success) {
+      console.error('Validation errors:', parseResult.error.issues);
       return NextResponse.json(
         { 
-          error: 'Validation failed', 
+          error: 'Validation failed for data:', 
+          data: body,
+          validationErrors: parseResult.error.issues,
           details: parseResult.error.issues 
         },
         { status: 400 }
@@ -26,7 +31,7 @@ export async function POST(request: NextRequest) {
   } catch (error) {
     console.error('Analysis error:', error);
     return NextResponse.json(
-      { error: 'Internal server error' },
+      { error: 'Internal server error', details: error instanceof Error ? error.message : 'Unknown error' },
       { status: 500 }
     );
   }

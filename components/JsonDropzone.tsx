@@ -107,17 +107,25 @@ export default function JsonDropzone({ onAnalyze, isAnalyzing }: JsonDropzonePro
   };
 
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    setError(null);
-    
-    try {
-      const data = JSON.parse(jsonInput);
-      onAnalyze(data);
-    } catch {
-      setError('Invalid JSON format. Please check your input.');
-    }
-  };
+      const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        setError(null);
+        
+        try {
+          const data = JSON.parse(jsonInput);
+          
+          // Basic validation before sending to API
+          if (!data.panels || !Array.isArray(data.panels) || data.panels.length === 0) {
+            setError('Invalid format: JSON must contain a "panels" array with at least one panel.');
+            return;
+          }
+          
+          onAnalyze(data);
+        } catch (parseError) {
+          setError('Invalid JSON format. Please check your input and ensure it\'s valid JSON.');
+          console.error('JSON parse error:', parseError);
+        }
+      };
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
@@ -175,10 +183,19 @@ export default function JsonDropzone({ onAnalyze, isAnalyzing }: JsonDropzonePro
 
       {/* Manual JSON Input */}
       <div>
-        <div className="mb-3">
+        <div className="mb-3 flex items-center justify-between">
           <label className="form-label" style={{fontSize: '14px', fontWeight: 600}}>
             Or paste JSON directly
           </label>
+          
+          {/* Submit Button - Moved above textarea */}
+          <button
+            type="submit"
+            disabled={isAnalyzing || isParsing || !jsonInput.trim()}
+            className="btn-primary px-4 py-2 font-semibold rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-sm"
+          >
+            {isParsing ? 'Parsing Document...' : isAnalyzing ? 'Analyzing...' : 'Analyze Results'}
+          </button>
         </div>
         <textarea
           value={jsonInput}
@@ -195,17 +212,6 @@ export default function JsonDropzone({ onAnalyze, isAnalyzing }: JsonDropzonePro
           <p className="text-sm">{error}</p>
         </div>
       )}
-
-      {/* Submit Button */}
-      <div className="flex justify-end">
-        <button
-          type="submit"
-          disabled={isAnalyzing || isParsing || !jsonInput.trim()}
-          className="btn-primary px-6 py-3 font-semibold rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-        >
-          {isParsing ? 'Parsing Document...' : isAnalyzing ? 'Analyzing...' : 'Analyze Results'}
-        </button>
-      </div>
     </form>
   );
 }
