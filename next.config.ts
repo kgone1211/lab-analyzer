@@ -2,9 +2,6 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   serverExternalPackages: ['pdf-parse'],
-  experimental: {
-    serverComponentsExternalPackages: ['pdf-parse']
-  },
   webpack: (config, { isServer }) => {
     if (isServer) {
       config.resolve = config.resolve || {};
