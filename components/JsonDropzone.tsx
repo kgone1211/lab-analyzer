@@ -188,14 +188,75 @@ export default function JsonDropzone({ onAnalyze, isAnalyzing }: JsonDropzonePro
             Or paste JSON directly
           </label>
           
-          {/* Submit Button - Moved above textarea */}
-          <button
-            type="submit"
-            disabled={isAnalyzing || isParsing || !jsonInput.trim()}
-            className="btn-primary px-4 py-2 font-semibold rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-sm"
-          >
-            {isParsing ? 'Parsing Document...' : isAnalyzing ? 'Analyzing...' : 'Analyze Results'}
-          </button>
+          {/* Action Buttons */}
+          <div className="flex gap-2">
+            <button
+              type="button"
+              onClick={() => {
+                const sampleJson = `{
+  "panels": [
+    {
+      "panelName": "CBC",
+      "markers": [
+        {
+          "name": "Hemoglobin",
+          "value": 14.2,
+          "unit": "g/dL",
+          "refLow": 12.0,
+          "refHigh": 15.5
+        },
+        {
+          "name": "Hematocrit",
+          "value": 42.5,
+          "unit": "%",
+          "refLow": 36.0,
+          "refHigh": 46.0
+        },
+        {
+          "name": "WBC",
+          "value": 7500,
+          "unit": "/uL",
+          "refLow": 4500,
+          "refHigh": 11000
+        }
+      ]
+    },
+    {
+      "panelName": "CMP",
+      "markers": [
+        {
+          "name": "Glucose",
+          "value": 95,
+          "unit": "mg/dL",
+          "refLow": 70,
+          "refHigh": 100
+        },
+        {
+          "name": "Creatinine",
+          "value": 1.1,
+          "unit": "mg/dL",
+          "refLow": 0.6,
+          "refHigh": 1.2
+        }
+      ]
+    }
+  ]
+}`;
+                setJsonInput(sampleJson);
+                setError(null);
+              }}
+              className="px-3 py-2 text-sm font-medium rounded-lg border border-white/20 text-white hover:bg-white/10 transition-colors"
+            >
+              Load Sample
+            </button>
+            <button
+              type="submit"
+              disabled={isAnalyzing || isParsing || !jsonInput.trim()}
+              className="btn-primary px-4 py-2 font-semibold rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-sm"
+            >
+              {isParsing ? 'Parsing Document...' : isAnalyzing ? 'Analyzing...' : 'Analyze Results'}
+            </button>
+          </div>
         </div>
         <textarea
           value={jsonInput}

@@ -118,9 +118,24 @@ Only return valid JSON, no explanatory text.`,
           );
         }
 
+        // Validate the parsed result against our schema
+        const { SubmissionSchema } = await import('@/lib/schemas');
+        const validationResult = SubmissionSchema.safeParse(parsedResult);
+        
+        if (!validationResult.success) {
+          console.error('Document parsing validation failed:', validationResult.error.issues);
+          return NextResponse.json(
+            { 
+              error: 'Parsed data does not match expected format. Please use the guided form or try a different document.',
+              details: validationResult.error.issues
+            },
+            { status: 400 }
+          );
+        }
+
         return NextResponse.json({
           success: true,
-          data: parsedResult,
+          data: validationResult.data,
           extractedText: extractedText.substring(0, 500) + '...'
         });
 
@@ -224,9 +239,24 @@ Only return valid JSON, no explanatory text.`,
       );
     }
 
+    // Validate the parsed result against our schema
+    const { SubmissionSchema } = await import('@/lib/schemas');
+    const validationResult = SubmissionSchema.safeParse(parsedResult);
+    
+    if (!validationResult.success) {
+      console.error('Document parsing validation failed:', validationResult.error.issues);
+      return NextResponse.json(
+        { 
+          error: 'Parsed data does not match expected format. Please use the guided form or try a different document.',
+          details: validationResult.error.issues
+        },
+        { status: 400 }
+      );
+    }
+
     return NextResponse.json({
       success: true,
-      data: parsedResult,
+      data: validationResult.data,
       extractedText: extractedText.substring(0, 500) + '...' // Return first 500 chars for debugging
     });
 
