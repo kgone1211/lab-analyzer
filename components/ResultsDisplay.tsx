@@ -183,6 +183,53 @@ export default function ResultsDisplay({ result, onReset }: ResultsDisplayProps)
             </ul>
           </div>
 
+          {/* Symptom Findings */}
+          {result.symptomFindings && result.symptomFindings.length > 0 && (
+            <div className="card p-8">
+              <h2 className="text-2xl font-bold mb-5" style={{color: 'var(--ink)', letterSpacing: '-0.02em'}}>Possible Symptoms & Clinical Findings</h2>
+              <div className="space-y-6">
+                {result.symptomFindings.map((finding, index) => (
+                  <div key={index} className="border-l-4 pl-6" style={{
+                    borderColor: finding.severity === 'severe' ? 'var(--danger)' : 
+                               finding.severity === 'moderate' ? 'var(--warning)' : 'var(--acc)'
+                  }}>
+                    <div className="flex items-center mb-3">
+                      <h3 className="text-lg font-semibold" style={{color: 'var(--ink)'}}>
+                        {finding.category}
+                      </h3>
+                      <span className="ml-3 px-3 py-1 rounded-full text-xs font-medium" style={{
+                        background: finding.severity === 'severe' ? 'rgba(239, 68, 68, 0.2)' : 
+                                  finding.severity === 'moderate' ? 'rgba(245, 158, 11, 0.2)' : 'rgba(59, 130, 246, 0.2)',
+                        color: finding.severity === 'severe' ? 'var(--danger)' : 
+                              finding.severity === 'moderate' ? 'var(--warning)' : 'var(--acc)'
+                      }}>
+                        {finding.severity.toUpperCase()}
+                      </span>
+                    </div>
+                    <p className="mb-4 text-sm" style={{color: 'var(--muted)', fontStyle: 'italic'}}>
+                      {finding.description}
+                    </p>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                      {finding.symptoms.map((symptom, symptomIndex) => (
+                        <div key={symptomIndex} className="flex items-center">
+                          <span className="mr-2" style={{color: 'var(--acc)', fontSize: '14px'}}>•</span>
+                          <span style={{color: 'var(--ink)', fontSize: '14px'}}>{symptom}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+              <div className="mt-6 p-4 rounded-lg" style={{background: 'rgba(59, 130, 246, 0.1)', border: '1px solid rgba(59, 130, 246, 0.3)'}}>
+                <p className="text-sm" style={{color: 'var(--acc)'}}>
+                  <strong>Note:</strong> These are potential symptoms that may be associated with your lab findings. 
+                  Not everyone will experience all symptoms, and symptoms can vary in severity. 
+                  Always discuss any concerning symptoms with your healthcare provider.
+                </p>
+              </div>
+            </div>
+          )}
+
           {/* AI Refined Text */}
           {refinedText && (
             <div className="card p-6" style={{border: '2px solid var(--acc)'}}>

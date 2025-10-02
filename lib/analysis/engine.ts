@@ -20,10 +20,18 @@ export interface PanelFinding {
   summary?: string;
 }
 
+export interface SymptomFinding {
+  category: string;
+  symptoms: string[];
+  severity: 'mild' | 'moderate' | 'severe';
+  description: string;
+}
+
 export interface AnalysisResult {
   overallSeverity: OverallSeverity;
   summaryBullets: string[];
   panelFindings: PanelFinding[];
+  symptomFindings?: SymptomFinding[];
 }
 
 export function classify(value: number, refLow: number, refHigh: number, criticalLow?: number, criticalHigh?: number): MarkerStatus {
@@ -606,10 +614,191 @@ export function analyzeSubmission(submission: Submission): AnalysisResult {
   summaryBullets.push("");
   summaryBullets.push("Your doctor will provide personalized recommendations based on your unique situation.");
   
+  // Analyze symptoms based on findings
+  const symptomFindings = analyzeSymptoms(panelFindings, overallSeverity);
+
   return {
     overallSeverity,
     summaryBullets,
     panelFindings,
+    symptomFindings,
   };
+}
+
+function analyzeSymptoms(panelFindings: PanelFinding[], overallSeverity: OverallSeverity): SymptomFinding[] {
+  const symptoms: SymptomFinding[] = [];
+  
+  // Helper function to add symptom if not already present
+  const addSymptom = (category: string, symptomList: string[], severity: 'mild' | 'moderate' | 'severe', description: string) => {
+    const existingIndex = symptoms.findIndex(s => s.category === category);
+    if (existingIndex >= 0) {
+      // Merge symptoms
+      symptoms[existingIndex].symptoms = [...new Set([...symptoms[existingIndex].symptoms, ...symptomList])];
+    } else {
+      symptoms.push({ category, symptoms: symptomList, severity, description });
+    }
+  };
+
+  // Analyze each panel for symptoms
+  for (const panel of panelFindings) {
+    const abnormalMarkers = panel.findings.filter(f => f.status !== 'NORMAL');
+    
+    if (abnormalMarkers.length === 0) continue;
+
+    switch (panel.panelName) {
+      case 'CBC':
+        const cbcAbnormal = abnormalMarkers.filter(m => m.status !== 'NORMAL');
+        if (cbcAbnormal.some(m => m.marker.toLowerCase().includes('hemoglobin') || m.marker.toLowerCase().includes('hematocrit'))) {
+          addSymptom('Anemia/Blood Issues', [
+            'Fatigue and weakness',
+            'Pale skin or gums',
+            'Shortness of breath',
+            'Dizziness or lightheadedness',
+            'Cold hands and feet'
+          ], 'moderate', 'Low red blood cell markers may indicate anemia');
+        }
+        if (cbcAbnormal.some(m => m.marker.toLowerCase().includes('wbc'))) {
+          addSymptom('Infection/Immune System', [
+            'Fever or chills',
+            'Fatigue',
+            'Body aches',
+            'Frequent infections',
+            'Slow healing wounds'
+          ], 'moderate', 'Abnormal white blood cell count may indicate infection or immune issues');
+        }
+        if (cbcAbnormal.some(m => m.marker.toLowerCase().includes('platelet'))) {
+          addSymptom('Bleeding/Clotting Issues', [
+            'Easy bruising',
+            'Frequent nosebleeds',
+            'Heavy menstrual periods',
+            'Bleeding gums',
+            'Prolonged bleeding from cuts'
+          ], 'moderate', 'Abnormal platelet count may affect blood clotting');
+        }
+        break;
+
+      case 'CMP':
+        if (abnormalMarkers.some(m => m.marker.toLowerCase().includes('glucose'))) {
+          addSymptom('Blood Sugar Issues', [
+            'Increased thirst and urination',
+            'Fatigue and weakness',
+            'Blurred vision',
+            'Slow healing wounds',
+            'Frequent infections',
+            'Weight loss (in severe cases)'
+          ], 'moderate', 'Abnormal glucose levels may indicate diabetes or prediabetes');
+        }
+        if (abnormalMarkers.some(m => m.marker.toLowerCase().includes('bun') || m.marker.toLowerCase().includes('creatinine'))) {
+          addSymptom('Kidney Function', [
+            'Fatigue and weakness',
+            'Swelling in feet, ankles, or face',
+            'Changes in urination frequency',
+            'Foamy or dark urine',
+            'High blood pressure',
+            'Nausea and vomiting'
+          ], 'moderate', 'Abnormal kidney markers may indicate kidney dysfunction');
+        }
+        if (abnormalMarkers.some(m => m.marker.toLowerCase().includes('sodium') || m.marker.toLowerCase().includes('potassium'))) {
+          addSymptom('Electrolyte Imbalance', [
+            'Muscle cramps or weakness',
+            'Irregular heartbeat',
+            'Confusion or mental changes',
+            'Nausea and vomiting',
+            'Headaches',
+            'Seizures (severe cases)'
+          ], 'severe', 'Electrolyte imbalances can be dangerous and require immediate attention');
+        }
+        break;
+
+      case 'LIPID':
+        addSymptom('Cardiovascular Risk', [
+          'Chest pain or pressure',
+          'Shortness of breath',
+          'Fatigue during activity',
+          'Leg pain during walking',
+          'High blood pressure',
+          'No symptoms (often silent)'
+        ], 'moderate', 'Abnormal lipid levels increase cardiovascular disease risk');
+        break;
+
+      case 'A1C':
+        addSymptom('Diabetes/Prediabetes', [
+          'Increased thirst and urination',
+          'Fatigue and weakness',
+          'Blurred vision',
+          'Slow healing wounds',
+          'Frequent infections',
+          'Unexplained weight loss',
+          'Tingling or numbness in hands/feet'
+        ], 'moderate', 'Elevated A1c indicates poor blood sugar control over time');
+        break;
+
+      case 'THYROID':
+        const highTSH = abnormalMarkers.some(m => m.marker.toLowerCase().includes('tsh') && m.status === 'HIGH');
+        const lowT4 = abnormalMarkers.some(m => (m.marker.toLowerCase().includes('t4') || m.marker.toLowerCase().includes('free t4')) && m.status === 'LOW');
+        
+        if (highTSH && lowT4) {
+          addSymptom('Hypothyroidism (Underactive Thyroid)', [
+            'Fatigue and weakness',
+            'Weight gain or difficulty losing weight',
+            'Cold intolerance',
+            'Dry skin and hair',
+            'Constipation',
+            'Depression or mood changes',
+            'Memory problems',
+            'Muscle aches and stiffness'
+          ], 'moderate', 'High TSH with low T4 indicates hypothyroidism');
+        } else if (abnormalMarkers.some(m => m.marker.toLowerCase().includes('tsh') && m.status === 'LOW')) {
+          addSymptom('Hyperthyroidism (Overactive Thyroid)', [
+            'Weight loss despite increased appetite',
+            'Rapid or irregular heartbeat',
+            'Nervousness and anxiety',
+            'Tremors or shaking',
+            'Heat intolerance and sweating',
+            'Sleep problems',
+            'Muscle weakness',
+            'Changes in bowel habits'
+          ], 'moderate', 'Low TSH may indicate hyperthyroidism');
+        }
+        break;
+
+      case 'VITD':
+        addSymptom('Vitamin D Deficiency', [
+          'Bone pain and muscle weakness',
+          'Fatigue and tiredness',
+          'Mood changes or depression',
+          'Frequent infections',
+          'Hair loss',
+          'Back pain',
+          'Impaired wound healing'
+        ], 'mild', 'Low vitamin D levels can affect bone health and immune function');
+        break;
+
+      case 'IRON':
+        addSymptom('Iron Deficiency Anemia', [
+          'Fatigue and weakness',
+          'Pale skin',
+          'Shortness of breath',
+          'Dizziness or lightheadedness',
+          'Cold hands and feet',
+          'Brittle nails',
+          'Unusual food cravings (pica)',
+          'Restless legs syndrome'
+        ], 'moderate', 'Low iron levels can cause iron deficiency anemia');
+        break;
+    }
+  }
+
+  // Add general symptoms based on overall severity
+  if (overallSeverity === 'SEVERE') {
+    addSymptom('General Health Warning', [
+      'Severe fatigue',
+      'Multiple system symptoms',
+      'Urgent medical attention needed',
+      'Possible serious underlying condition'
+    ], 'severe', 'Multiple critical abnormalities detected - immediate medical evaluation recommended');
+  }
+
+  return symptoms;
 }
 
